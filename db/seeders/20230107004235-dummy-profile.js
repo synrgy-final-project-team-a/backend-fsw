@@ -12,8 +12,9 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    return queryInterface.bulkInsert("profiles", [
+    return queryInterface.bulkInsert("profile", [
       {
+        user_id: 1,
         first_name: "Fajar",
         last_name: "sadboi",
         phone_number: "082260307011",
@@ -23,8 +24,10 @@ module.exports = {
         city: "KABUPATEN GORONTALO",
         address: "jl. Boalemo raya no.12 Kab. Gorontalo, 17878",
         gmaps: "https://goo.gl/maps/QXh6QbcT2XXHbrnS9",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
+        id: 2,
+        id_id: 2,
       },
     ]);
   },
@@ -36,6 +39,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-     return queryInterface.bulkDelete("Profiles", null, {});
+    return queryInterface.bulkDelete("Profiles", null, {});
   },
 };
