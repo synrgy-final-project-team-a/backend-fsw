@@ -1,8 +1,8 @@
 const models = require('../../db/models/index.js');
-const User = models.user;
+const UserDetails = models.user_details;
 
 const findAllUser = async () => {
-    return await User.findAll();
+    return await UserDetails.findAll();
 };
 
 // const findCarById = async (id) => {
