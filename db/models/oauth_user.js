@@ -13,19 +13,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_user.init(
     {
-      id: DataTypes.INTEGER,
+      id: { type: DataTypes.BIGINT, primaryKey: true },
       not_expired: DataTypes.BOOLEAN,
       not_locked: DataTypes.BOOLEAN,
       credential_not_expired: DataTypes.BOOLEAN,
       enabled: DataTypes.BOOLEAN,
-      expired_verify_token: DataTypes.DATE,
+      expired_verify_token: DataTypes.NOW,
       otp: DataTypes.STRING,
-      otp_expired_date: DataTypes.DATE,
+      otp_expired_date: DataTypes.NOW,
       password: DataTypes.STRING,
       email: DataTypes.STRING,
       verify_token: DataTypes.STRING,
-      created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE,
+      created_at: DataTypes.NOW,
+      updated_at: DataTypes.NOW,
     },
     {
       sequelize,

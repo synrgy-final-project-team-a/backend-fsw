@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_role.init(
     {
-      id: DataTypes.INTEGER,
+      id: { type: DataTypes.BIGINT, primaryKey: true },
       name: DataTypes.STRING,
       type: DataTypes.STRING,
-      created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE,
+      created_at: DataTypes.NOW,
+      updated_at: DataTypes.NOW,
     },
     {
       sequelize,

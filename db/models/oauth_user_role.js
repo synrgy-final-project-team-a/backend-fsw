@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Oauth_user_role.init({
-    user_id: DataTypes.INTEGER,
-    role_id: DataTypes.INTEGER,
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE
+    user_id: DataTypes.BIGINT,
+    role_id: DataTypes.BIGINT,
+    created_at: DataTypes.NOW,
+    updated_at: DataTypes.NOW
   }, {
     sequelize,
     modelName: 'Oauth_user_role',
