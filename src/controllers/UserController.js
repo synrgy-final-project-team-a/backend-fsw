@@ -1,10 +1,20 @@
 const UserService = require("../services/UserService");
 
-
 const getAllUsers = async (req, res) => {
-    const users = await UserService.getUsers();
+  const users = await UserService.getUsers();
 
-    res.status(200).json(users);
-}
+  res.status(200).json(users);
+};
+const GetUserById = async (req, res) => {
+  const { status, message, data } = await UserService.getUserById({
+    user_id: 1,
+    // first_name: "Fajar",
+  });
+  res.status(status).send({
+    status: status,
+    message: message,
+    data: data,
+  });
+};
 
-module.exports = {getAllUsers};
+module.exports = { getAllUsers, GetUserById };
