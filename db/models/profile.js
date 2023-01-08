@@ -21,12 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       address: DataTypes.STRING,
       gmaps: DataTypes.STRING,
-      id: DataTypes.BIGINT,
+      created_at: DataTypes.NOW,
+      id: {type: DataTypes.BIGINT, primaryKey: true},
       id_id: DataTypes.BIGINT,
     },
     {
       sequelize,
       modelName: "Profile",
+      tableName: "profile",
+      timestamps: false
     }
   );
   return Profile;
