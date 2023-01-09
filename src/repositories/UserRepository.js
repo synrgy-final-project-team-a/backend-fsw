@@ -1,5 +1,6 @@
 const models = require("../../db/models/index.js");
 const UserDetails = models.user_details;
+const User = models.user;
 
 const findAllUser = async () => {
   return await UserDetails.findAll();
@@ -14,6 +15,11 @@ const getUserById = async ({ user_id }) => {
   // console.log(getUser);
   return getUser;
 };
+
+const createUser = async (user) => {
+  return await User.create(user);
+};
+
 
 // const findCarById = async (id) => {
 //     return await Car.findByPk(id);
@@ -33,4 +39,4 @@ const getUserById = async ({ user_id }) => {
 //     });
 // };
 
-module.exports = { findAllUser, getUserById };
+module.exports = { findAllUser, getUserById, createUser };

@@ -33,4 +33,15 @@ const getUserById = async ({ user_id }) => {
     };
   }
 };
-module.exports = { getUsers, getUserById };
+
+const createUser = async (user) => {
+  await userRepository.createUser(user)
+
+  return {
+    code: 201,
+    message: "Create User success",
+    data: user,
+  };
+}
+
+module.exports = { getUsers, getUserById, createUser };
