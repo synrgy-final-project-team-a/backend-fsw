@@ -2,36 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("profile", {
-      user_id: {
+    await queryInterface.createTable("Oauth_role_paths", {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      first_name: {
+      method: {
         type: Sequelize.STRING,
       },
-      last_name: {
+      name: {
         type: Sequelize.STRING,
       },
-      phone_number: {
+      pattern: {
         type: Sequelize.STRING,
       },
-      avatar: {
-        type: Sequelize.STRING,
-      },
-      province: {
-        type: Sequelize.STRING,
-      },
-      city: {
-        type: Sequelize.STRING,
-      },
-      address: {
-        type: Sequelize.STRING,
-      },
-      gmaps: {
-        type: Sequelize.STRING,
+      role_id: {
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -41,15 +29,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      id: {
-        type: BigInt,
-      },
-      id_id: {
-        type: BigInt,
-      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("profile");
+    await queryInterface.dropTable("Oauth_role_paths");
   },
 };
