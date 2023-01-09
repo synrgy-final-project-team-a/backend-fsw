@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       client_id: { type: DataTypes.BIGINT, primaryKey: true },
       role_id: { type: DataTypes.BIGINT, primaryKey: true },
-      created_at: DataType.NOW,
-      updated_at: DataType.NOW,
+      created_at: DataTypes.NOW,
+      updated_at: DataTypes.NOW,
     },
     {
       sequelize,
