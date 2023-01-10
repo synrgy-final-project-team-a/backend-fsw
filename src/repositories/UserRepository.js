@@ -1,6 +1,6 @@
 const models = require("../../db/models/index.js");
 const UserDetails = models.user_details;
-const User = models.user;
+const User = models.oauth_user;
 
 const findAllUser = async () => {
   return await UserDetails.findAll();
@@ -15,8 +15,9 @@ const getUserById = async ({ userId }) => {
   return getUser;
 };
 
-const createUser = async (user) => {
-  return await User.create(user);
+const createUser = async ({ email, password }) => {
+  console.log({ email, password });
+  return await User.create({ email, password });
 };
 
 

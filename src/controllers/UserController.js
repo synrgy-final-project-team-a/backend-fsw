@@ -18,9 +18,10 @@ const GetUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const user = req.body;
-  await UserService.createUser(user);
-  res.status(201).json(users);
+  const { email } = req.body;
+  console.log({ email });
+  await UserService.createUser({ email });
+  res.status(201).json({ email });
 }
 
 module.exports = { getAllUsers, GetUserById, createUser };

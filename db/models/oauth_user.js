@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Oauth_user",
+      tableName: "Oauth_users"
     }
   );
   return Oauth_user;
