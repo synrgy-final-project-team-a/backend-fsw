@@ -10,7 +10,6 @@ const getUserById = async ({ userId }) => {
       user_id: userId,
     },
   });
-  // console.log(getUser);
   return getUser;
 };
 

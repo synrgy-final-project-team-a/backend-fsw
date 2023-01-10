@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Oauth_user.hasOne(models.Profile, {
+        foreignKey: "user_id",
+      });
     }
   }
   Oauth_user.init(
@@ -24,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       email: DataTypes.STRING,
       verify_token: DataTypes.STRING,
-      created_at: DataTypes.NOW,
-      updated_at: DataTypes.NOW,
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Oauth_user",
+      tableName: "oauth_user",
     }
   );
   return Oauth_user;

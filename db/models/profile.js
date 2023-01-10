@@ -9,10 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Profile.belongsTo(models.Oauth_user, {
+        foreignKey: "user_id",
+      });
     }
   }
   Profile.init(
     {
+      id: { type: DataTypes.BIGINT, primaryKey: true },
       first_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
       phone_number: DataTypes.STRING,
@@ -21,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       address: DataTypes.STRING,
       gmaps: DataTypes.STRING,
-      created_at: DataTypes.NOW,
-      updated_at: DataTypes.NOW,
-      user_id: {type: DataTypes.BIGINT, primaryKey: true},
+
+      user_id: DataTypes.BIGINT,
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Profile",
       tableName: "profile",
