@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       gmaps: DataTypes.STRING,
       created_at: DataTypes.NOW,
-      user_id: { type: DataTypes.BIGINT, primaryKey: true },
+      updated_at: DataTypes.NOW,
+      user_id: {type: DataTypes.BIGINT, primaryKey: true},
     },
     {
       sequelize,

@@ -7,8 +7,7 @@ const getAllUsers = async (req, res) => {
 };
 const GetUserById = async (req, res) => {
   const { status, message, data } = await UserService.getUserById({
-    user_id: 1,
-    // first_name: "Fajar",
+    userId: req.user.id,
   });
   res.status(status).send({
     status: status,

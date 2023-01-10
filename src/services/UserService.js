@@ -1,5 +1,4 @@
 const userRepository = require("../repositories/UserRepository");
-
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
 
@@ -9,9 +8,9 @@ const getUsers = async () => {
     data: users,
   };
 };
-const getUserById = async ({ user_id }) => {
+const getUserById = async ({ userId }) => {
   try {
-    const getUser = await userRepository.getUserById({ user_id });
+    const getUser = await userRepository.getUserById({ userId });
 
     if (!getUser) {
       return {
