@@ -9,6 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Oauth_role.hasMany(models.Oauth_user_role, {
+        foreignKey: "role_id",
+      });
+      models.Oauth_role.hasMany(models.Oauth_client_role, {
+        foreignKey: "role_id",
+      });
+      models.Oauth_role.hasMany(models.Oauth_role_path, {
+        foreignKey: "role_id",
+      });
     }
   }
   Oauth_role.init(

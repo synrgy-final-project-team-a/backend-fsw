@@ -41,10 +41,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      id: {
-        type: BigInt,
-      },
-      id_id: {
+      user_id: {
         type: BigInt,
       },
     });

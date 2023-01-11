@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Oauth_user_role extends Model {
     /**
@@ -11,16 +9,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Oauth_user_role.belongsTo(models.Oauth_user, {
+        foreignKey: "user_id",
+      });
+      models.Oauth_user_role.belongsTo(models.Oauth_role, {
+        foreignKey: "role_id",
+      });
     }
   }
-  Oauth_user_role.init({
-    user_id: DataTypes.BIGINT,
-    role_id: DataTypes.BIGINT,
-    created_at: DataTypes.NOW,
-    updated_at: DataTypes.NOW
-  }, {
-    sequelize,
-    modelName: 'Oauth_user_role',
-  });
+  Oauth_user_role.init(
+    {
+      user_id: DataTypes.BIGINT,
+      role_id: DataTypes.BIGINT,
+      created_at: DataTypes.NOW,
+      updated_at: DataTypes.NOW,
+    },
+    {
+      sequelize,
+      modelName: "Oauth_user_role",
+    }
+  );
   return Oauth_user_role;
 };

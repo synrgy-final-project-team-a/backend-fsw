@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Oauth_role_path.belongsTo(models.Oauth_role, {
+        foreignKey: "role_id",
+      });
     }
   }
   Oauth_role_path.init(
