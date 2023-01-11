@@ -1,0 +1,127 @@
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      security:
+        - BearerAuth: []
+      tags:
+        - Auth
+      consumes:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/AuthLogin"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of user data
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/AuthLogin"
+  /auth/register:
+    post:
+      summary: Register User
+      tags:
+        - Auth
+      consumes:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/AuthRegister"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of user data
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/AuthRegister"
+  /auth/registeradmin:
+    post:
+      summary: Register Admin
+      tags:
+        - Auth
+      consumes:
+        - application/json
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/AuthRegister"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of user data
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/AuthRegister"
+  /auth/me:
+    get:
+      summary: Auth me
+      security: 
+        - BearerAuth: []
+      tags: 
+        - Auth
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: An detail Token
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/AuthMe"

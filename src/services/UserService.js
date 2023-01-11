@@ -14,7 +14,9 @@ const getUserById = async ({ email }) => {
   try {
     const getUserId = await oauthRepository.getUserByEmail({ email });
 
-    const getUser = await userRepository.getUserById({ userId: getUserId.id });
+    const getUser = await userRepository.getUserById({
+      id: getUserId.peofile_id,
+    });
 
     if (!getUser) {
       return {

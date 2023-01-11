@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Oauth_user.hasOne(models.Profile, {
+      models.Oauth_user.belongsTo(models.Profile, {
+        foreignKey: "profile_id",
+      });
+      models.Oauth_user.hasMany(models.Oauth_user_role, {
         foreignKey: "user_id",
       });
     }
@@ -27,9 +30,11 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       email: DataTypes.STRING,
       verify_token: DataTypes.STRING,
+      created_at: DataTypes.NOW,
+      updated_at: DataTypes.NOW,
+      profile_id: DataTypes.BIGINT,
     },
     {
-      timestamps: false,
       sequelize,
       modelName: "Oauth_user",
       tableName: "oauth_user",

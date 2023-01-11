@@ -4,10 +4,10 @@ const UserDetails = models.user_details;
 const findAllUser = async () => {
   return await UserDetails.findAll();
 };
-const getUserById = async ({ userId }) => {
+const getUserById = async ({ id }) => {
   const getUser = await UserDetails.findOne({
     where: {
-      user_id: userId,
+      id: id,
     },
   });
   return getUser;
