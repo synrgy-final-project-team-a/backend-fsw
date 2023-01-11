@@ -1,5 +1,5 @@
-const dotenv = require('dotenv')
-dotenv.config()
+const dotenv = require("dotenv");
+dotenv.config();
 
 module.exports = {
   development: {
@@ -8,7 +8,7 @@ module.exports = {
     database: process.env.PG_NAME,
     host: process.env.PG_HOST,
     dialect: "postgres",
-    port: process.env.DB_PORT
+    port: process.env.PG_PORT,
   },
   test: {
     username: "root",
