@@ -8,9 +8,9 @@ components:
         status:
           type: string
           enum:
-            - success
-            - fail
-            - error
+            - 200
+            - 400
+            - 500
     JsendSuccess:
       allOf:
         - $ref: "#/components/schemas/Jsend"
@@ -19,9 +19,9 @@ components:
             - data
           properties:
             status:
+              type: number
+            message:
               type: string
-              enum:
-                - success
             data:
               type: object
     JsendError:
@@ -78,5 +78,21 @@ components:
           format: binary
     User:
       type: object
-      properties: 
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        avatar:
+          type: string
+        province:
+          type: string
+        city:
+          type: string
+        address:
+          type: string
+        gmaps:
+          type: string
         

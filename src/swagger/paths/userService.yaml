@@ -5,14 +5,14 @@ paths:
       security: 
         - BearerAuth: []
       tags: 
-        - User Service
+        - User
       consumes:
         - application/json
       produces:
         - application/json
       responses:
         200:
-          description: an array of detail user data
+          description: an expected responses detail user data
           content:
             "application/json":
               schema:
@@ -26,4 +26,4 @@ paths:
                             - properties:
                                 id:
                                   type: integer
-                            - $ref: "#/components/schemas/Cars"
+                            - $ref: "#/components/schemas/User"

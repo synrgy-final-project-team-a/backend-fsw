@@ -1,5 +1,3 @@
 tags:
-  - name: Auth 
-    description: Auth endpoints
-  - name: Cars
+  - name: User
     description: product endpoints
