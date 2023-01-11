@@ -7,7 +7,7 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(users);
 };
 const GetUserById = async (req, res) => {
-  console.log(req.user.user_name);
+  // console.log(req.user.user_name);
   const { status, message, data } = await UserService.getUserById({
     email: req.user.user_name,
   });

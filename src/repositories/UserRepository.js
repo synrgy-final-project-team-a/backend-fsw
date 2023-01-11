@@ -4,10 +4,11 @@ const UserDetails = models.user_details;
 const findAllUser = async () => {
   return await UserDetails.findAll();
 };
-const getUserById = async ({ id }) => {
+const getUserById = async (payload) => {
+  // console.log(payload);
   const getUser = await UserDetails.findOne({
     where: {
-      id: id,
+      id: payload.id,
     },
   });
   return getUser;

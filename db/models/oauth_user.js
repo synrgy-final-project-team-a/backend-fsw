@@ -30,11 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       email: DataTypes.STRING,
       verify_token: DataTypes.STRING,
-      created_at: DataTypes.NOW,
-      updated_at: DataTypes.NOW,
       profile_id: DataTypes.BIGINT,
     },
     {
+      timestamps:false,
       sequelize,
       modelName: "Oauth_user",
       tableName: "oauth_user",

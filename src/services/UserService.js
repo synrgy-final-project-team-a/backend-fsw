@@ -14,9 +14,14 @@ const getUserById = async ({ email }) => {
   try {
     const getUserId = await oauthRepository.getUserByEmail({ email });
 
-    const getUser = await userRepository.getUserById({
-      id: getUserId.peofile_id,
-    });
+    // console.log(getUserId.profile_id);
+    const payload = {
+      id: getUserId.profile_id,
+    };
+    // console.log(payload)
+    const getUser = await userRepository.getUserById(payload);
+
+    // console.log(getUser);
 
     if (!getUser) {
       return {
