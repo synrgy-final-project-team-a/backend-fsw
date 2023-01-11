@@ -33,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       profile_id: DataTypes.BIGINT,
     },
     {
-      timestamps: false,
       sequelize,
       modelName: "Oauth_user",
       tableName: "oauth_user",

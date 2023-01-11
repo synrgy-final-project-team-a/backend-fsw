@@ -1,4 +1,6 @@
 const userRepository = require("../repositories/UserRepository");
+const oauthRepository = require("../repositories/OauthUser");
+
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
 
@@ -8,9 +10,18 @@ const getUsers = async () => {
     data: users,
   };
 };
-const getUserById = async ({ userId }) => {
+const getUserById = async ({ email }) => {
   try {
-    const getUser = await userRepository.getUserById({ userId });
+    const getUserId = await oauthRepository.getUserByEmail({ email });
+
+    // console.log(getUserId.profile_id);
+    const payload = {
+      id: getUserId.profile_id,
+    };
+    // console.log(payload)
+    const getUser = await userRepository.getUserById(payload);
+
+    // console.log(getUser);
 
     if (!getUser) {
       return {

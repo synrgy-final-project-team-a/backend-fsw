@@ -5,19 +5,19 @@ const User = models.oauth_user;
 const findAllUser = async () => {
   return await UserDetails.findAll();
 };
-const getUserById = async ({ userId }) => {
+const getUserById = async (payload) => {
+  // console.log(payload);
   const getUser = await UserDetails.findOne({
     where: {
-      user_id: userId,
+      id: payload.id,
     },
   });
-  // console.log(getUser);
   return getUser;
 };
 
-const createUser = async ({ email, password }) => {
-  console.log({ email, password });
-  return await User.create({ email, password });
+const createUser = async ({ email }) => {
+  console.log({ email });
+  return await User.create({ email });
 };
 
 
