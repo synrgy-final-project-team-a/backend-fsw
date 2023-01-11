@@ -1,8 +1,17 @@
-const models = require('../../db/models/index.js');
+const models = require("../../db/models/index.js");
 const UserDetails = models.user_details;
 
 const findAllUser = async () => {
-    return await UserDetails.findAll();
+  return await UserDetails.findAll();
+};
+const getUserById = async (payload) => {
+  // console.log(payload);
+  const getUser = await UserDetails.findOne({
+    where: {
+      id: payload.id,
+    },
+  });
+  return getUser;
 };
 
 // const findCarById = async (id) => {
@@ -23,4 +32,4 @@ const findAllUser = async () => {
 //     });
 // };
 
-module.exports = {findAllUser};
+module.exports = { findAllUser, getUserById };

@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Oauth_client.hasMany(models.Oauth_role_path, {
+        foreignKey: "client_id",
+      });
     }
   }
   Oauth_client.init(
