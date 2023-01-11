@@ -15,28 +15,10 @@ const getUserById = async (payload) => {
   return getUser;
 };
 
-const createUser = async ({ email }) => {
-  console.log({ email });
-  return await User.create({ email });
+const createUser = async (payload) => {
+  console.log(payload);
+  return await User.create(payload);
 };
 
-
-// const findCarById = async (id) => {
-//     return await Car.findByPk(id);
-// };
-
-// const saveCar = async (car) => {
-//     return await Car.create(car);
-// };
-
-// const updateCar = async (car, carId) => {
-//     return await Car.update(car, {wher:{id: carId}})
-// }
-
-// const destroyCar = async (carId) => {
-//     await Car.destroy({
-//         where: {id: carId}
-//     });
-// };
 
 module.exports = { findAllUser, getUserById, createUser };

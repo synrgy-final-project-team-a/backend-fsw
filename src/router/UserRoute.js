@@ -15,12 +15,8 @@ var jsonParser = bodyparser.json()
 // router.get("/api/user/detail", auth.parseToken, GetUserById);
 // router.post("/api/user/create", jsonParser, auth.parseToken, createUser);
 
-router.get(
-    "/api/users/",
-    getAllUsers
-);
+router.get("/api/users/", getAllUsers);
 router.get("/api/user/detail", GetUserById);
-
 router.post("/api/user/create", jsonParser, createUser);
 
 

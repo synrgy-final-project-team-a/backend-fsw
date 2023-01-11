@@ -42,7 +42,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       user_id: {
-        type: Sequelize.BIGINT,
+        type: BigInt,
       },
     });
   },
