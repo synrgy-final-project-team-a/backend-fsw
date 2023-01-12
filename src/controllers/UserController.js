@@ -23,6 +23,7 @@ const createUser = async (req, res) => {
   const { status, message, data } = await UserService.createUser({
     id: req.body.id,
     email: req.body.email,
+    password: req.body.password,
     enabled: req.body.enabled
   });
   res.status(status).send({
