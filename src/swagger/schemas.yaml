@@ -64,19 +64,27 @@ components:
           type: string
         password:
           type: string
-    Cars:
+    User:
       type: object
       properties:
-        name:
+        first_name:
           type: string
-        tipemobil:
+        last_name:
           type: string
-        price:
-          type: integer
-        picture:
+        phone_number:
           type: string
-          format: binary
-    User:
+        avatar:
+          type: string
+        province:
+          type: string
+        city:
+          type: string
+        address:
+          type: string
+        gmaps:
+          type: string
+    
+    GetUsers:
       type: object
       properties:
         first_name:
