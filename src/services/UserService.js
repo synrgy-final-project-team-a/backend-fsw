@@ -48,7 +48,7 @@ const createUser = async (payload) => {
   try {
     // console.log({ email });
 
-    await userRepository.createUser(payload);
+    const createUsers = await userRepository.createUser(payload);
 
     if (!createUsers) {
       return {
