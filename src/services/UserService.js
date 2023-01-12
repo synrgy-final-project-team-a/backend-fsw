@@ -44,11 +44,11 @@ const getUserById = async ({ email }) => {
   }
 };
 
-const createUser = async ({ email }) => {
+const createUser = async ({ email,id, password }) => {
   try {
     // console.log({ email });
 
-    await userRepository.createUser({ email });
+    await userRepository.createUser({ email, id, password });
 
     if (!createUsers) {
       return {
