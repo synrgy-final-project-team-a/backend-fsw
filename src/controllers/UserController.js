@@ -20,4 +20,16 @@ const GetUserById = async (req, res) => {
   });
 };
 
-module.exports = { getAllUsers, GetUserById };
+const createUser = async (req, res) => {
+  // console.log(req.body.email);
+  const { status, message, data } = await UserService.createUser({
+    email: req.body.email,
+  });
+  res.status(status).send({
+    status: status,
+    message: message,
+    data: data,
+  });
+}
+
+module.exports = { getAllUsers, GetUserById, createUser };

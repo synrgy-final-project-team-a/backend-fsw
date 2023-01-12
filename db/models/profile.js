@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      
+
 
       models.Profile.hasMany(models.Oauth_user, {
         foreignKey: "profile_id",

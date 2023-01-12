@@ -43,4 +43,32 @@ const getUserById = async ({ email }) => {
     };
   }
 };
-module.exports = { getUsers, getUserById };
+
+const createUser = async ({ email }) => {
+  try {
+    // console.log({ email });
+
+    await userRepository.createUser({ email });
+
+    if (!createUsers) {
+      return {
+        status: 400,
+        message: "Failed to add user",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Post User data success",
+      data: { email },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
+module.exports = { getUsers, getUserById, createUser };

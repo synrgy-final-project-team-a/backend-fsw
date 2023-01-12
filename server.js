@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 var cloudinary = require("cloudinary").v2;
 // ref: https://expressjs.com/en/resources/middleware/multer.html
 const multer = require("multer");
-const UserRoute = require("./src/router/UserRoute");
+const UserRoute = require("./src/router/UserRoute")
+const bodyparser = require('body-parser');
 
 dotenv.config();
 
@@ -26,6 +27,10 @@ app.get("/", (req, res) => {
 });
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(UserRoute);
+
+/* assuming an express app is declared here */
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
 
 app.listen(PORT, () =>
   console.log(`Example app listening on port http://localhost:${PORT}`)

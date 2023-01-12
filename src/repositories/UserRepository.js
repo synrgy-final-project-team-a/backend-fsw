@@ -1,5 +1,6 @@
 const models = require("../../db/models/index.js");
 const UserDetails = models.user_details;
+const User = models.oauth_user;
 
 const findAllUser = async () => {
   return await UserDetails.findAll();
@@ -14,22 +15,10 @@ const getUserById = async (payload) => {
   return getUser;
 };
 
-// const findCarById = async (id) => {
-//     return await Car.findByPk(id);
-// };
+const createUser = async (payload) => {
+  console.log(payload);
+  return await User.create(payload);
+};
 
-// const saveCar = async (car) => {
-//     return await Car.create(car);
-// };
 
-// const updateCar = async (car, carId) => {
-//     return await Car.update(car, {wher:{id: carId}})
-// }
-
-// const destroyCar = async (carId) => {
-//     await Car.destroy({
-//         where: {id: carId}
-//     });
-// };
-
-module.exports = { findAllUser, getUserById };
+module.exports = { findAllUser, getUserById, createUser };
