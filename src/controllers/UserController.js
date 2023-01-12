@@ -21,7 +21,9 @@ const GetUserById = async (req, res) => {
 const createUser = async (req, res) => {
   // console.log(req.body.email);
   const { status, message, data } = await UserService.createUser({
+    id: req.body.id,
     email: req.body.email,
+    enabled: req.body.enabled
   });
   res.status(status).send({
     status: status,
