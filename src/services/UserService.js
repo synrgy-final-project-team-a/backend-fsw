@@ -46,7 +46,6 @@ const getUserById = async ({ email }) => {
 
 const createUser = async ({
   email,
-  id,
   password,
   enabled,
   not_expired,
@@ -56,7 +55,6 @@ const createUser = async ({
   try {
     const payload = {
       email: email,
-      id: id,
       password: password,
       enabled: enabled,
       not_expired: not_expired,

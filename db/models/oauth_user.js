@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_user.init(
     {
-      id: { type: DataTypes.BIGINT, primaryKey: true },
+      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
       not_expired: DataTypes.BOOLEAN,
       not_locked: DataTypes.BOOLEAN,
       credential_not_expired: DataTypes.BOOLEAN,

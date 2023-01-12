@@ -16,8 +16,6 @@ const getUserById = async (payload) => {
 };
 
 const createUser = async (payload) => {
-  console.log(payload)
-  console.log("ini repositori ==============")
   return await User.create(payload);
 };
 

@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_client_role.init(
     {
-      client_id: { type: DataTypes.BIGINT, primaryKey: true },
+      client_id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
       role_id: { type: DataTypes.BIGINT, primaryKey: true },
       created_at: DataTypes.NOW,
       updated_at: DataTypes.NOW,
