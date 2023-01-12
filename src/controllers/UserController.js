@@ -20,11 +20,18 @@ const GetUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  // console.log(req.body.email);
+  console.log(req.body);
+
+  const { email, id, password } = req.body;
+  console.log(email, id, password, "ini di controller")
   const { status, message, data } = await UserService.createUser({
-    email: req.body.email,
-    id: req.body.id,
-    password: req.body.password,
+    email: email,
+    id: id,
+    password: password,
+    enabled: true,
+    not_expired: true,
+    not_locked: true,
+    credential_not_expired: true,
   });
   res.status(status).send({
     status: status,

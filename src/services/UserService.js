@@ -44,13 +44,29 @@ const getUserById = async ({ email }) => {
   }
 };
 
-const createUser = async ({ email,id, password }) => {
+const createUser = async ({
+  email,
+  id,
+  password,
+  enabled,
+  not_expired,
+  not_locked,
+  credential_not_expired,
+}) => {
   try {
-    // console.log({ email });
+    const payload = {
+      email: email,
+      id: id,
+      password: password,
+      enabled: enabled,
+      not_expired: not_expired,
+      not_locked: not_locked,
+      credential_not_expired: credential_not_expired,
+    };
 
-    await userRepository.createUser({ email, id, password });
+    const user = await userRepository.createUser(payload);
 
-    if (!createUsers) {
+    if (!user) {
       return {
         status: 400,
         message: "Failed to add user",
@@ -60,15 +76,16 @@ const createUser = async ({ email,id, password }) => {
     return {
       status: 200,
       message: "Post User data success",
-      data: { email },
+      data: payload ,
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: error.message,
       data: null,
     };
   }
-}
+};
 
 module.exports = { getUsers, getUserById, createUser };
