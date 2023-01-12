@@ -1,5 +1,6 @@
 const userRepository = require("../repositories/UserRepository");
-const oauthRepository = require("../repositories/OauthUser");
+const oauthUserRepository = require("../repositories/OauthUserRepository");
+const bcrypt = require('bcrypt');
 
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
@@ -53,16 +54,17 @@ const createUser = async ({
   credential_not_expired,
 }) => {
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
     const payload = {
       email: email,
-      password: password,
+      password: hashedPassword,
       enabled: enabled,
       not_expired: not_expired,
       not_locked: not_locked,
       credential_not_expired: credential_not_expired,
     };
 
-    const user = await userRepository.createUser(payload);
+    const user = await oauthUserRepository.createUser(payload);
 
     if (!user) {
       return {

@@ -10,4 +10,8 @@ const getUserByEmail = async ({ email }) => {
   });
   return getUser;
 };
-module.exports = { getUserByEmail };
+const createUser = async (payload) => {
+  return await OauthUser.create(payload);
+};
+
+module.exports = { getUserByEmail, createUser };
