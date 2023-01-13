@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_role_path.init(
     {
-      id: { type: DataTypes.BIGINT, primaryKey: true },
+      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
       method: DataTypes.STRING,
       name: DataTypes.STRING,
       pattern: DataTypes.STRING,

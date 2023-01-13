@@ -6,11 +6,17 @@ const jwt = require("jsonwebtoken");
 var cloudinary = require("cloudinary").v2;
 // ref: https://expressjs.com/en/resources/middleware/multer.html
 const multer = require("multer");
-const UserRoute = require("./src/router/UserRoute");
+const UserRoute = require("./src/router/UserRoute")
+const bodyparser = require('body-parser');
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
+/* assuming an express app is declared here */
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
+
 const PORT = process.env.PORT;
 
 const swaggerUi = require("swagger-ui-express");
@@ -19,7 +25,6 @@ const swaggerJsdoc = require("swagger-jsdoc");
 // SWAGGER
 const swaggerOptions = require("./src/utils/swaggerOptions");
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
-app.use(cors());
 
 app.get("/", (req, res) => {
   return res.send("Server Already Running");
