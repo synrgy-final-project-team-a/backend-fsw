@@ -46,4 +46,4 @@ jobs:
       - name: Deploy To Railway
         run: railway up
         env:
-          RAILWAY_TOKEN: d6bd6332-e31f-429b-a943-a23eac9ab6cc
+          RAILWAY_TOKEN: a9f09818-d01a-414a-8155-00c684c21413
