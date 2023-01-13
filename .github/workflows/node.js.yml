@@ -46,21 +46,4 @@ jobs:
       - name: Deploy To Railway
         run: railway up
         env:
-          final_project_be_fsw: 11b3a74c-db1e-4845-a81d-d0929bdd0229
-    
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
-    #     cache: 'npm'
-
-    # - name: Install Railway
-    #   run: npm i -g @railway/cli
-    
-    # - name: Deploy To Railway
-    #   run: railway up
-    #   env:
-    #     final_project_be_fsw: 11b3a74c-db1e-4845-a81d-d0929bdd0229
-
-    # - run: npm ci
-    # - run: npm run build --if-present
-    # - run: npm test
+          RAILWAY_TOKEN: 11b3a74c-db1e-4845-a81d-d0929bdd0229
