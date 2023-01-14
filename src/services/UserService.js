@@ -1,6 +1,7 @@
 const userRepository = require("../repositories/UserRepository");
 const oauthUserRepository = require("../repositories/OauthUserRepository");
-const bcrypt = require('bcrypt');
+const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
+const bcrypt = require("bcrypt");
 
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
@@ -14,15 +15,10 @@ const getUsers = async () => {
 const getUserById = async ({ email }) => {
   try {
     const getUserId = await oauthRepository.getUserByEmail({ email });
-
-    // console.log(getUserId.profile_id);
     const payload = {
       id: getUserId.profile_id,
     };
-    // console.log(payload)
     const getUser = await userRepository.getUserById(payload);
-
-    // console.log(getUser);
 
     if (!getUser) {
       return {
@@ -52,34 +48,73 @@ const createUser = async ({
   not_expired,
   not_locked,
   credential_not_expired,
+  role_id,
 }) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const payload = {
-      email: email,
-      password: hashedPassword,
-      enabled: enabled,
-      not_expired: not_expired,
-      not_locked: not_locked,
-      credential_not_expired: credential_not_expired,
-    };
-
-    const user = await oauthUserRepository.createUser(payload);
-
-    if (!user) {
+    const emailAlreadyExist = await oauthUserRepository.getUserByEmail({
+      email,
+    });
+    if (emailAlreadyExist) {
       return {
         status: 400,
-        message: "Failed to add user",
+        message: "Email Already Exist, try another email!",
         data: null,
       };
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const payload = {
+        email: email,
+        password: hashedPassword,
+        enabled: enabled,
+        not_expired: not_expired,
+        not_locked: not_locked,
+        credential_not_expired: credential_not_expired,
+      };
+
+      const user = await oauthUserRepository.createUser(payload);
+
+      if (!user) {
+        return {
+          status: 400,
+          message: "Failed to add user",
+          data: null,
+        };
+      } else {
+        const userId = user.id;
+
+        const payloadUserRole = {
+          user_id: userId,
+          role_id: role_id,
+        };
+
+        const createUserRole = await oauthUserRoleRepository.createUserRole(
+          payloadUserRole
+        );
+
+        if (!createUserRole) {
+          return {
+            status: 400,
+            message: "Failed to add user role",
+            data: null,
+          };
+        }
+
+        return {
+          status: 200,
+          message: "Post User data success",
+          data: {
+            id: userId,
+            email: payload.email,
+            role_id: role_id,
+            enabled: payload.enabled,
+            not_expired: payload.not_expired,
+            not_locked: payload.not_locked,
+            credential_not_expired: payload.credential_not_expired,
+          },
+        };
+      }
     }
-    return {
-      status: 200,
-      message: "Post User data success",
-      data: payload ,
-    };
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: error.message,

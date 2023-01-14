@@ -46,5 +46,7 @@ db.sequelize = sequelize;
 db.user = require("./user.js")(sequelize, Sequelize);
 db.user_details = require("./profile.js")(sequelize, Sequelize);
 db.oauth_user = require("./oauth_user.js")(sequelize, Sequelize);
+db.oauth_user_role = require("./oauth_user_role.js")(sequelize, Sequelize);
+db.oauth_role = require("./oauth_role")(sequelize, Sequelize);
 
 module.exports = db;

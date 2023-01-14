@@ -5,7 +5,6 @@ const findAllUser = async () => {
   return await UserDetails.findAll();
 };
 const getUserById = async (payload) => {
-  // console.log(payload);
   const getUser = await UserDetails.findOne({
     where: {
       id: payload.id,

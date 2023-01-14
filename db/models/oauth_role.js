@@ -25,8 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
       name: DataTypes.STRING,
       type: DataTypes.STRING,
-      created_at: DataTypes.NOW,
-      updated_at: DataTypes.NOW,
     },
     {
       sequelize,
