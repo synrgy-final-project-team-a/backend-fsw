@@ -111,13 +111,19 @@ components:
           type: string
         password:
           type: string
+        role_id: 
+          type: array
+          items:
+            type: integer
     SuccessCreateUser:
       type: object
       properties:
         email:
           type: string
-        password:
-          type: string
+        role_id: 
+          type: array
+          items:
+            type: integer
         enabled:
           type: boolean
         not_expired:

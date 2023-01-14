@@ -14,23 +14,31 @@ const GetUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  console.log(req.body);
+  const { email, password, role_id } = req.body;
 
-  const { email, password } = req.body;
-  
-  const { status, message, data } = await UserService.createUser({
-    email: email,
-    password: password,
-    enabled: true,
-    not_expired: true,
-    not_locked: true,
-    credential_not_expired: true,
-  });
-  res.status(status).send({
-    status: status,
-    message: message,
-    data: data,
-  });
+  if (!email || !password || !role_id) {
+    res.status(400).send({
+      status: 400,
+      message: "Email, Password, Role can't be null",
+      data: null,
+    });
+  } else {
+    const { status, message, data } = await UserService.createUser({
+      email: email,
+      password: password,
+      enabled: true,
+      not_expired: true,
+      not_locked: true,
+      credential_not_expired: true,
+      role_id: role_id,
+    });
+
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  }
 };
 
 module.exports = { getAllUsers, GetUserById, createUser };
