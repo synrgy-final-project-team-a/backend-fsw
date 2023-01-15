@@ -14,7 +14,7 @@ const getUsers = async () => {
 };
 const getUserById = async ({ email }) => {
   try {
-    const getUserId = await oauthRepository.getUserByEmail({ email });
+    const getUserId = await oauthUserRepository.getUserByEmail({ email });
     const payload = {
       id: getUserId.profile_id,
     };
