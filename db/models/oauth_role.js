@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Oauth_role",
+      tableName: "oauth_role",
+      timestamps: false
     }
   );
   return Oauth_role;
