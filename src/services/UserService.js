@@ -7,8 +7,15 @@ const deleteUser = async(id) => {
   try {
     const getUserById = await userRepository.getUserById(id);
     await oauthUserRepository.disabledUser(id);
-    await userRepository.deleteUser(id);
-    console.log(getUserById);
+    const deleteProfileUser = await userRepository.deleteUser(id);
+    if (!deleteProfileUser) {
+      await oauthUserRepository.enabledUser(id);
+      return {
+        status: 500,
+        message: "Failed Deleted User",
+        data: null
+      }
+    }
     
     return {
       status: 200,
@@ -16,6 +23,7 @@ const deleteUser = async(id) => {
       data: getUserById
     }
   } catch (error) {
+    
     console.log(error);
     return {
       status: 500,

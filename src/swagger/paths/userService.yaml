@@ -124,4 +124,4 @@ paths:
                               - properties:
                                   id:
                                     type: integer
-                              - $ref: "#/components/schemas/SuccessCreateUser"
+                              - $ref: "#/components/schemas/User"

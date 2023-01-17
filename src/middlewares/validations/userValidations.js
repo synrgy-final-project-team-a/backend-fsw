@@ -1,5 +1,6 @@
 const oauthUserRepository = require("../../repositories/OauthUserRepository");
 const oauthRoleRepository = require("../../repositories/OauthRoleRepository");
+const userRepository = require("../../repositories/UserRepository");
 const { asyncForEach, yup } = require('../../utils/tools');
 
 const createUserValidation = yup.object({
@@ -45,6 +46,21 @@ const createUserValidation = yup.object({
       .noUnknown(true),
   });
 
+const deleteUserValidation = yup.object({
+  params: yup.object({
+    id: yup.number().required().test(
+      "user_id_validations",
+      "Id Not Exist", async function(value, key) {
+        console.log(value);
+        const getUserById = await userRepository.getUserById(value);
+        console.log(getUserById);
+        if (getUserById == null) return this.createError({message: `User Profile With Id ${value} Is Not Exist`});
+        return true;
+      }
+    ),
+  }),
+})
+
 module.exports = {
-    createUserValidation
+    createUserValidation, deleteUserValidation
 }

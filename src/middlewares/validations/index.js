@@ -9,6 +9,7 @@ const validation = (schema) => async (req, res, next) => {
       });
       return next();
     } catch (err) {
+      console.log(err);
       return res
         .status(400)
         .json({status:400,message: err.message, data: err.name});

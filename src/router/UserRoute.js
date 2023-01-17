@@ -7,7 +7,10 @@ const {
 const express = require("express");
 const auth = require("../middlewares/authorization");
 const { validation } = require("../middlewares/validations");
-const { createUserValidation } = require("../middlewares/validations/userValidations");
+const { 
+  createUserValidation,
+  deleteUserValidation
+} = require("../middlewares/validations/userValidations");
 
 const router = express.Router();
 
@@ -23,6 +26,7 @@ router.delete(
   "/api/user/delete/:id", 
   auth.parseToken, 
   auth.checkRole(["ROLE_SUPERUSER"]),
+  validation(deleteUserValidation),
   deleteUser
 );
 

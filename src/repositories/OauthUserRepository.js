@@ -35,4 +35,4 @@ const enabledUser = async (profileId) => {
   })
 }
 
-module.exports = { getUserByEmail, createUser, disabledUser};
+module.exports = { getUserByEmail, createUser, disabledUser, enabledUser};
