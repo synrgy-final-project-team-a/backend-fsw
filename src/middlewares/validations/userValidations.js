@@ -51,9 +51,7 @@ const deleteUserValidation = yup.object({
     id: yup.number().required().test(
       "user_id_validations",
       "Id Not Exist", async function(value, key) {
-        console.log(value);
         const getUserById = await userRepository.getUserById(value);
-        console.log(getUserById);
         if (getUserById == null) return this.createError({message: `User Profile With Id ${value} Is Not Exist`});
         return true;
       }
