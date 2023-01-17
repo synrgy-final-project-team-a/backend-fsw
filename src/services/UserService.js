@@ -3,6 +3,28 @@ const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
 const bcrypt = require("bcrypt");
 
+const deleteUser = async(id) => {
+  try {
+    const getUserById = await userRepository.getUserById(id);
+    await oauthUserRepository.disabledUser(id);
+    await userRepository.deleteUser(id);
+    console.log(getUserById);
+    
+    return {
+      status: 200,
+      message: "Success Deleted User",
+      data: getUserById
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: "Internal Server Error",
+      data: null
+    }
+  }
+}
+
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
 
@@ -15,10 +37,8 @@ const getUsers = async () => {
 const getUserById = async ({ email }) => {
   try {
     const getUserId = await oauthUserRepository.getUserByEmail({ email });
-    const payload = {
-      id: getUserId.profile_id,
-    };
-    const getUser = await userRepository.getUserById(payload);
+    const profile_id = getUserId.profile_id;
+    const getUser = await userRepository.getUserById(profile_id);
 
     if (!getUser) {
       return {
@@ -123,4 +143,4 @@ const createUser = async ({
   }
 };
 
-module.exports = { getUsers, getUserById, createUser };
+module.exports = { getUsers, getUserById, createUser, deleteUser };

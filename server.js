@@ -12,7 +12,7 @@ const bodyparser = require('body-parser');
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors(false));
 /* assuming an express app is declared here */
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
