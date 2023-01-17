@@ -40,7 +40,6 @@ exports.parseToken = async (req, res, next) => {
 exports.checkRole = function (roles = []) {
   return async (req, res, next) => {
     const userRoles = req.user.role;
-    let permissionGranted = false;
 
     // the output will be the same element of 2 array
     const cek = roles.filter(element => userRoles.includes(element));
