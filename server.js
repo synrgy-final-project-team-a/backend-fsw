@@ -9,7 +9,7 @@ const multer = require("multer");
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors(false));
 /* assuming an express app is declared here */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

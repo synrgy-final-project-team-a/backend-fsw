@@ -1,6 +1,13 @@
 const UserService = require("../services/UserService");
 const cloudinary = require("../utils/cloudinaryConfig");
 
+const deleteUser = async(req, res) => {
+  const id = req.params.id;
+
+  const deletedUser = await UserService.deleteUser(id);
+  res.status(deletedUser.status).json(deletedUser);
+}
+
 const getAllUsers = async (req, res) => {
   const users = await UserService.getUsers();
 
@@ -61,4 +68,4 @@ const createUser = async (req, res) => {
   });
 };
 
-module.exports = { getAllUsers, GetUserById, createUser };
+module.exports = { getAllUsers, GetUserById, createUser, deleteUser };
