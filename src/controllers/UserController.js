@@ -1,11 +1,11 @@
 const UserService = require("../services/UserService");
 
-const deleteUser = async(req, res) => {
+const deleteUser = async (req, res) => {
   const id = req.params.id;
 
   const deletedUser = await UserService.deleteUser(id);
   res.status(deletedUser.status).json(deletedUser);
-}
+};
 
 const getAllUsers = async (req, res) => {
   const users = await UserService.getUsers();
@@ -13,8 +13,8 @@ const getAllUsers = async (req, res) => {
   res.status(users.status).json(users);
 };
 
-const GetUserById = async (req, res) => {
-  const data = await UserService.getUserById({
+const getDetailUser = async (req, res) => {
+  const data = await UserService.getDetailUser({
     email: req.user.user_name,
   });
   res.status(data.status).json(data);
@@ -48,4 +48,17 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, GetUserById, createUser, deleteUser };
+const getUserById = async (req, res) => {
+  const data = await UserService.getUserById({
+    id: req.params.id,
+  });
+  res.status(data.status).json(data);
+};
+
+module.exports = {
+  getUserById,
+  getAllUsers,
+  getDetailUser,
+  createUser,
+  deleteUser,
+};

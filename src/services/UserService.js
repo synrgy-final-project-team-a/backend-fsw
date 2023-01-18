@@ -3,7 +3,7 @@ const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
 const bcrypt = require("bcrypt");
 
-const deleteUser = async(id) => {
+const deleteUser = async (id) => {
   try {
     const getUserById = await userRepository.getUserById(id);
     await oauthUserRepository.disabledUser(id);
@@ -13,25 +13,24 @@ const deleteUser = async(id) => {
       return {
         status: 500,
         message: "Failed Deleted User",
-        data: null
-      }
+        data: null,
+      };
     }
-    
+
     return {
       status: 200,
       message: "Success Deleted User",
-      data: getUserById
-    }
+      data: getUserById,
+    };
   } catch (error) {
-    
     console.log(error);
     return {
       status: 500,
       message: "Internal Server Error",
-      data: null
-    }
+      data: null,
+    };
   }
-}
+};
 
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
@@ -42,7 +41,7 @@ const getUsers = async () => {
     data: users,
   };
 };
-const getUserById = async ({ email }) => {
+const getDetailUser = async ({ email }) => {
   try {
     const getUserId = await oauthUserRepository.getUserByEmail({ email });
     const profile_id = getUserId.profile_id;
@@ -151,4 +150,34 @@ const createUser = async ({
   }
 };
 
-module.exports = { getUsers, getUserById, createUser, deleteUser };
+const getUserById = async ({ id }) => {
+  try {
+    const getUser = await userRepository.getUserById(id);
+
+    if (!getUser) {
+      return {
+        status: 400,
+        message: "User not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Get User data success",
+      data: getUser,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: error.message,
+      data: null,
+    };
+  }
+};
+module.exports = {
+  getUsers,
+  getDetailUser,
+  createUser,
+  deleteUser,
+  getUserById,
+};
