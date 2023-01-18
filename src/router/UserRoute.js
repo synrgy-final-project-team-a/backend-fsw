@@ -7,9 +7,9 @@ const {
 const express = require("express");
 const auth = require("../middlewares/authorization");
 const { validation } = require("../middlewares/validations");
-<<<<<<< HEAD
 const {
   createUserValidation,
+  deleteUserValidation,
 } = require("../middlewares/validations/userValidations");
 const multerUpload = require("../utils/multer");
 const multer = require("multer");
@@ -23,12 +23,7 @@ const upload = multer({
     },
   }),
 });
-=======
-const { 
-  createUserValidation,
-  deleteUserValidation
-} = require("../middlewares/validations/userValidations");
->>>>>>> 9a89ae07e37479014b1235f4b7335ffa784ed922
+
 
 const router = express.Router();
 
