@@ -90,3 +90,38 @@ paths:
                                 id:
                                   type: integer
                             - $ref: "#/components/schemas/SuccessCreateUser"
+  /api/user/delete/{id}:
+      delete:  
+        summary: delete user by superadmin
+        security: 
+          - BearerAuth: []
+        tags: 
+          - User
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+         -   in: path
+             name: id
+             schema:
+                 type: integer
+             required: true
+             description: User id
+        responses:
+          200:
+            description: Delete User data success
+            content:
+              "application/json":
+                schema:
+                  allOf:
+                    - $ref: "#/components/schemas/JsendSuccess"
+                    - properties:
+                        data:
+                          type: array
+                          items:
+                            allOf:
+                              - properties:
+                                  id:
+                                    type: integer
+                              - $ref: "#/components/schemas/User"

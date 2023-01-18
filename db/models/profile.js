@@ -27,13 +27,18 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       address: DataTypes.STRING,
       gmaps: DataTypes.STRING,
+      deletedAt: DataTypes.DATE,
     },
     {
       timestamps: false,
       sequelize,
       modelName: "Profile",
       tableName: "profile",
-      timestamps: false,
+      createdAt: false,
+      updatedAt: false,
+      timestamps: true,
+      paranoid: true,
+      deletedAt: 'deletedAt'
     }
   );
   return Profile;
