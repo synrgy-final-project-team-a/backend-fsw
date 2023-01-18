@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       address: DataTypes.STRING,
       gmaps: DataTypes.STRING,
-      deletedAt: DataTypes.DATE,
+      deleted_at: DataTypes.DATE,
     },
     {
       timestamps: false,
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
       timestamps: true,
       paranoid: true,
-      deletedAt: 'deletedAt'
+      deletedAt: 'deleted_at'
     }
   );
   return Profile;
