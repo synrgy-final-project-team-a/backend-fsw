@@ -7,6 +7,7 @@ const findAllUser = async () => {
     "SELECT prfl.*, ou.email, ou.not_locked, ou.enabled, ouu.role_id FROM profile prfl " +
     "INNER JOIN oauth_user ou ON ou.profile_id = prfl.id " +
     "INNER JOIN oauth_user_role ouu ON ouu.user_id = ou.id " +
+    "WHERE prfl.deleted_at IS NULL " +
     "ORDER BY prfl.id ASC"
     );
 
