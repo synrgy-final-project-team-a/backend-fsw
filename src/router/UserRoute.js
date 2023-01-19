@@ -2,7 +2,7 @@ const {
   getAllUsers,
   GetUserById,
   createUser,
-  deleteUser
+  deleteUser,
 } = require("../controllers/UserController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
@@ -24,7 +24,6 @@ const upload = multer({
   }),
 });
 
-
 const router = express.Router();
 
 router.get(
@@ -36,13 +35,16 @@ router.get(
 router.get("/api/user/detail", auth.parseToken, GetUserById);
 router.post(
   "/api/user/create",
+  auth.parseToken,
+  auth.checkRole(["ROLE_SUPERUSER"]),
   upload.any(),
   validation(createUserValidation),
-  createUser)
-  
+  createUser
+);
+
 router.delete(
-  "/api/user/delete/:id", 
-  auth.parseToken, 
+  "/api/user/delete/:id",
+  auth.parseToken,
   auth.checkRole(["ROLE_SUPERUSER"]),
   validation(deleteUserValidation),
   deleteUser

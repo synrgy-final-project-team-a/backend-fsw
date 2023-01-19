@@ -57,7 +57,7 @@ paths:
                             - $ref: "#/components/schemas/GetUsers" 
   /api/user/create:
     post:  
-      summary: get all users
+      summary: Create new user for super admin role
       security: 
         - BearerAuth: []
       tags: 
@@ -67,7 +67,7 @@ paths:
       requestBody:
         required: true
         content:
-          "application/json":
+          "multipart/formData":
             schema:
               allOf:
                 - $ref: "#/components/schemas/CreateUser"
