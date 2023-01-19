@@ -1,5 +1,6 @@
 const UserService = require("../services/UserService");
 const cloudinary = require("../utils/cloudinaryConfig");
+const fs = require('fs');
 
 const deleteUser = async(req, res) => {
   const id = req.params.id;
@@ -36,10 +37,9 @@ const createUser = async (req, res) => {
     gender,
   } = req.body;
   const role_id_arr = role_id.split(",");
-
-  const result = await cloudinary.cloudinary.uploader.upload(
-    "../uploads/synrgy_logo.jpg"
-  );
+  const pathFile = req.file.destination + req.file.filename;
+  const result = await cloudinary.cloudinary.uploader.upload(pathFile);
+  fs.unlinkSync(pathFile)
   const avatar = result.url;
 
   const { status, message, data } = await UserService.createUser({
