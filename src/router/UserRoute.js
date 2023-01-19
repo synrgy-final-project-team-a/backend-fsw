@@ -13,6 +13,19 @@ const {
   deleteUserValidation,
   getUserByIdValidation,
 } = require("../middlewares/validations/userValidations");
+const multerUpload = require("../utils/multer");
+const multer = require("multer");
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "../uploads/");
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  }),
+});
+
 
 const router = express.Router();
 
@@ -23,7 +36,12 @@ router.get(
   getAllUsers
 );
 router.get("/api/user/detail", auth.parseToken, getDetailUser);
-router.post("/api/user/create", validation(createUserValidation), createUser);
+router.post(
+  "/api/user/create",
+  // validation(createUserValidation),
+  upload.single("avatar"),
+  createUser)
+  
 router.delete(
   "/api/user/delete/:id",
   auth.parseToken,

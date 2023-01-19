@@ -1,4 +1,5 @@
 const UserService = require("../services/UserService");
+const cloudinary = require("../utils/cloudinaryConfig");
 
 const deleteUser = async (req, res) => {
   const id = req.params.id;
@@ -21,31 +22,50 @@ const getDetailUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { email, password, role_id } = req.body;
+  const {
+    email,
+    password,
+    role_id,
+    address,
+    city,
+    first_name,
+    gmaps,
+    last_name,
+    phone_number,
+    province,
+    gender,
+  } = req.body;
+  const role_id_arr = role_id.split(",");
 
-  if (!email || !password || !role_id) {
-    res.status(400).send({
-      status: 400,
-      message: "Email, Password, Role can't be null",
-      data: null,
-    });
-  } else {
-    const { status, message, data } = await UserService.createUser({
-      email: email,
-      password: password,
-      enabled: true,
-      not_expired: true,
-      not_locked: true,
-      credential_not_expired: true,
-      role_id: role_id,
-    });
+  const result = await cloudinary.cloudinary.uploader.upload(
+    "../uploads/synrgy_logo.jpg"
+  );
+  const avatar = result.url;
 
-    res.status(status).send({
-      status: status,
-      message: message,
-      data: data,
-    });
-  }
+  const { status, message, data } = await UserService.createUser({
+    email: email,
+    password: password,
+    role_id: role_id_arr,
+    address: address,
+    city: city,
+    first_name: first_name,
+    gmaps: gmaps,
+    last_name: last_name,
+    phone_number: phone_number,
+    province: province,
+    gender: gender,
+    avatar: avatar,
+    enabled: true,
+    not_expired: true,
+    not_locked: true,
+    credential_not_expired: true,
+  });
+
+  res.status(status).send({
+    status: status,
+    message: message,
+    data: data,
+  });
 };
 
 const getUserById = async (req, res) => {

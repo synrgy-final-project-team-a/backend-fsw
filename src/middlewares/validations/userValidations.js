@@ -3,7 +3,11 @@ const oauthRoleRepository = require("../../repositories/OauthRoleRepository");
 const userRepository = require("../../repositories/UserRepository");
 const { asyncForEach, yup } = require("../../utils/tools");
 
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 const createUserValidation = yup.object({
+  // file: yup.object({
+  //   originalname: yup.string().required("Image must be required"),
+  // }),
   body: yup
     .object({
       email: yup
@@ -45,7 +49,17 @@ const createUserValidation = yup.object({
         )
         .required()
         .notRequired(),
-      // email: yup.string().required(),
+      address: yup
+        .string()
+        .required()
+        .typeError("Address must be type string."),
+      city: yup.string().required("City must be required."),
+      first_name: yup.string().required("First name must be required"),
+      gmaps: yup.string().nullable(),
+      last_name: yup.string().required("Last name must be required."),
+      phone_number: yup.string().required("Phone number must be required"),
+      province: yup.string().required("Province must be required."),
+      gender: yup.string().required("Gender must be required."),
     })
     .noUnknown(true),
 });

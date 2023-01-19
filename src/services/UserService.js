@@ -71,34 +71,61 @@ const getDetailUser = async ({ email }) => {
 const createUser = async ({
   email,
   password,
+  role_id,
+  address,
+  city,
+  first_name,
+  gmaps,
+  last_name,
+  phone_number,
+  province,
+  gender,
+  avatar,
   enabled,
   not_expired,
   not_locked,
   credential_not_expired,
-  role_id,
 }) => {
   try {
-    const emailAlreadyExist = await oauthUserRepository.getUserByEmail({
-      email,
-    });
-    if (emailAlreadyExist) {
+    const payloadCreateProfile = {
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name,
+      phone_number,
+      province,
+      gender: gender,
+      avatar: avatar,
+    };
+    const createProfile = await userRepository.createProfile(
+      payloadCreateProfile
+    );
+
+    if (!createProfile) {
       return {
         status: 400,
-        message: "Email Already Exist, try another email!",
+        message: "Failed to create profile",
         data: null,
       };
     } else {
+      // console.log(createProfile, "----> ini createProfile");
+
+      const idProfile = createProfile.id;
+
       const hashedPassword = await bcrypt.hash(password, 10);
-      const payload = {
+
+      const payloadCreateUser = {
         email: email,
         password: hashedPassword,
         enabled: enabled,
         not_expired: not_expired,
         not_locked: not_locked,
         credential_not_expired: credential_not_expired,
+        profile_id: idProfile,
       };
 
-      const user = await oauthUserRepository.createUser(payload);
+      const user = await oauthUserRepository.createUser(payloadCreateUser);
 
       if (!user) {
         return {
@@ -131,17 +158,28 @@ const createUser = async ({
           message: "Post User data success",
           data: {
             id: userId,
-            email: payload.email,
+            email: payloadCreateUser.email,
+            address: createProfile.address,
+            avatar: createProfile.avatar,
+            city: createProfile.city,
+            first_name: createProfile.first_name,
+            gmaps: createProfile.gmaps,
+            last_name: createProfile.last_name,
+            phone_number: createProfile.phone_number,
+            province: createProfile.province,
+            gender: createProfile.gender,
+            created_at: createProfile.created_at,
             role_id: role_id,
-            enabled: payload.enabled,
-            not_expired: payload.not_expired,
-            not_locked: payload.not_locked,
-            credential_not_expired: payload.credential_not_expired,
+            enabled: payloadCreateUser.enabled,
+            not_expired: payloadCreateUser.not_expired,
+            not_locked: payloadCreateUser.not_locked,
+            credential_not_expired: payloadCreateUser.credential_not_expired,
           },
         };
       }
     }
   } catch (error) {
+    console.log(error, "ini errornya");
     return {
       status: 500,
       message: error.message,
@@ -167,6 +205,38 @@ const getUserById = async ({ id }) => {
       data: getUser,
     };
   } catch (error) {
+    return {
+      status: 500,
+      message: error.message,
+      data: null,
+    };
+  }
+};
+const createProfile = async ({
+  address,
+  avatar,
+  city,
+  first_name,
+  gmaps,
+  last_name,
+  phone_number,
+  province,
+  gender,
+}) => {
+  try {
+    const profile = await userRepository.createProfile({
+      address,
+      avatar,
+      city,
+      first_name,
+      gmaps,
+      last_name,
+      phone_number,
+      province,
+      gender,
+    });
+  } catch (error) {
+    console.log(error, "ini errornya prfile");
     return {
       status: 500,
       message: error.message,
