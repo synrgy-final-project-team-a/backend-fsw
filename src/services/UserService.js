@@ -3,7 +3,7 @@ const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
 const bcrypt = require("bcrypt");
 
-const deleteUser = async(id) => {
+const deleteUser = async (id) => {
   try {
     const getUserById = await userRepository.getUserById(id);
     await oauthUserRepository.disabledUser(id);
@@ -13,25 +13,24 @@ const deleteUser = async(id) => {
       return {
         status: 500,
         message: "Failed Deleted User",
-        data: null
-      }
+        data: null,
+      };
     }
-    
+
     return {
       status: 200,
       message: "Success Deleted User",
-      data: getUserById
-    }
+      data: getUserById,
+    };
   } catch (error) {
-    
     console.log(error);
     return {
       status: 500,
       message: "Internal Server Error",
-      data: null
-    }
+      data: null,
+    };
   }
-}
+};
 
 const getUsers = async () => {
   const users = await userRepository.findAllUser();
@@ -159,6 +158,7 @@ const createUser = async ({
           message: "Post User data success",
           data: {
             id: userId,
+            profile_id: idProfile,
             email: payloadCreateUser.email,
             address: createProfile.address,
             avatar: createProfile.avatar,
