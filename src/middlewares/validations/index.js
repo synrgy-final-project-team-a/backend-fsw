@@ -1,7 +1,7 @@
 const validation = (schema) => async (req, res, next) => {
   try {
     await schema.validate({
-      file: req.file,
+      file: req.files[0],
       body: req.body,
       query: req.query,
       params: req.params,

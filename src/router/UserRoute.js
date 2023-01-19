@@ -19,7 +19,6 @@ const upload = multer({
       cb(null, "../backend-fsw/src/uploads/");
     },
     filename: (req, file, cb) => {
-      console.log(file.originalname);
       cb(null, file.originalname);
     },
   }),
@@ -37,8 +36,8 @@ router.get(
 router.get("/api/user/detail", auth.parseToken, GetUserById);
 router.post(
   "/api/user/create",
-  // validation(createUserValidation),
-  upload.single("avatar"),
+  upload.any(),
+  validation(createUserValidation),
   createUser)
   
 router.delete(
