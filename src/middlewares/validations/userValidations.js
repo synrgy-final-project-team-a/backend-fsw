@@ -18,11 +18,9 @@ const createUserValidation = yup.object({
           "email_validations",
           "Email Already Exist, try another email!",
           async function (value, key) {
-            console.log(value);
-            const emailAlreadyExist = await oauthUserRepository.getUserByEmail({
-              email: value,
-            });
-            return emailAlreadyExist == null;
+            const emailAlreadyExist = await oauthUserRepository.getUserByEmailWhereNotDeleted(value);
+            if(emailAlreadyExist.length > 0) return false;
+            return true;
           }
         ),
       password: yup.string().min(6).required().typeError("Minimal Passsword 6"),
