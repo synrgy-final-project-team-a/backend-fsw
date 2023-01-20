@@ -38,8 +38,8 @@ router.post(
   auth.parseToken,
   auth.checkRole(["ROLE_SUPERUSER"]),
   upload.any(),
-  // validation(createUserValidation),
-  // createUser
+  validation(createUserValidation),
+  createUser
 );
 
 router.delete(
