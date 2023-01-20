@@ -122,7 +122,7 @@ const createUser = async ({
 
       const idProfile = createProfile.id;
 
-      const hashedPassword = bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       const payloadCreateUser = {
         email: email,
