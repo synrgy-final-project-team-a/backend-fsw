@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 const validation = (schema) => async (req, res, next) => {
   try {
     await schema.validate({

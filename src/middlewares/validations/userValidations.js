@@ -1,7 +1,7 @@
 const oauthUserRepository = require("../../repositories/OauthUserRepository");
 const oauthRoleRepository = require("../../repositories/OauthRoleRepository");
 const userRepository = require("../../repositories/UserRepository");
-const { asyncForEach, yup } = require('../../utils/tools');
+const { asyncForEach, yup } = require("../../utils/tools");
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 const createUserValidation = yup.object({
@@ -18,8 +18,9 @@ const createUserValidation = yup.object({
           "email_validations",
           "Email Already Exist, try another email!",
           async function (value, key) {
-            const emailAlreadyExist = await oauthUserRepository.getUserByEmailWhereNotDeleted(value);
-            if(emailAlreadyExist.length > 0) return false;
+            const emailAlreadyExist =
+              await oauthUserRepository.getUserByEmailWhereNotDeleted(value);
+            if (emailAlreadyExist.length > 0) return false;
             return true;
           }
         ),
@@ -64,17 +65,38 @@ const createUserValidation = yup.object({
 
 const deleteUserValidation = yup.object({
   params: yup.object({
-    id: yup.number().required().test(
-      "user_id_validations",
-      "Id Not Exist", async function(value, key) {
+    id: yup
+      .number()
+      .required()
+      .test("user_id_validations", "Id Not Exist", async function (value, key) {
         const getUserById = await userRepository.getUserById(value);
-        if (getUserById == null) return this.createError({message: `User Profile With Id ${value} Is Not Exist`});
+        if (getUserById == null)
+          return this.createError({
+            message: `User Profile With Id ${value} Is Not Exist`,
+          });
         return true;
-      }
-    ),
+      }),
   }),
-})
+});
+
+const getUserByIdValidation = yup.object({
+  params: yup.object({
+    id: yup
+      .number()
+      .required()
+      .test("user_id_validations", "Id Not Exist", async function (value, key) {
+        const getUserById = await userRepository.getUserById(value);
+        if (getUserById == null)
+          return this.createError({
+            message: `User Profile With Id ${value} Is Not Exist`,
+          });
+        return true;
+      }),
+  }),
+});
 
 module.exports = {
-    createUserValidation, deleteUserValidation
-}
+  createUserValidation,
+  deleteUserValidation,
+  getUserByIdValidation,
+};
