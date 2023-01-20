@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_client.init(
     {
-      id: { type: DataTypes.BIGINT, primaryKey: true },
+      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
       access_token_expired: DataTypes.INTEGER,
       approved: DataTypes.BOOLEAN,
       client_id: DataTypes.STRING,

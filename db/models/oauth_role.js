@@ -22,15 +22,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_role.init(
     {
-      id: { type: DataTypes.BIGINT, primaryKey: true },
+      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
       name: DataTypes.STRING,
       type: DataTypes.STRING,
-      created_at: DataTypes.NOW,
-      updated_at: DataTypes.NOW,
     },
     {
       sequelize,
       modelName: "Oauth_role",
+      tableName: "oauth_role",
+      timestamps: false
     }
   );
   return Oauth_role;

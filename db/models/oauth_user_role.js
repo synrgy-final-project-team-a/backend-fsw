@@ -19,15 +19,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_user_role.init(
     {
-      user_id: DataTypes.BIGINT,
+      user_id: {
+        type: DataTypes.BIGINT,
+        foreignKey:"user_id",
+      },
       role_id: DataTypes.BIGINT,
-      created_at: DataTypes.NOW,
-      updated_at: DataTypes.NOW,
     },
     {
       sequelize,
       modelName: "Oauth_user_role",
+      tableName: "oauth_user_role",
+      timestamps: false,
     }
   );
+
   return Oauth_user_role;
 };

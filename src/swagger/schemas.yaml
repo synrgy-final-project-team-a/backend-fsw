@@ -64,18 +64,6 @@ components:
           type: string
         password:
           type: string
-    Cars:
-      type: object
-      properties:
-        name:
-          type: string
-        tipemobil:
-          type: string
-        price:
-          type: integer
-        picture:
-          type: string
-          format: binary
     User:
       type: object
       properties:
@@ -95,4 +83,97 @@ components:
           type: string
         gmaps:
           type: string
-        
+    
+    GetUsers:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        avatar:
+          type: string
+        province:
+          type: string
+        city:
+          type: string
+        address:
+          type: string
+        gmaps:
+          type: string
+    
+    CreateUser:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role_id: 
+          type: array
+          items:
+            type: integer
+        address:
+          type: string
+        city:
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+        avatar:
+          type: string
+          format: binary
+       
+    SuccessCreateUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        profile_id:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        avatar: 
+          type: string
+        city: 
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+        created_at:
+          type: string
+        role_id: 
+          type: array
+          items:
+            type: integer
+        enabled:
+          type: boolean
+        not_expired:
+          type: boolean
+        not_locked:
+          type: boolean
+        credential_not_expired:
+          type: boolean

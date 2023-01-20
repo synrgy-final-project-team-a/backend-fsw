@@ -27,3 +27,101 @@ paths:
                                 id:
                                   type: integer
                             - $ref: "#/components/schemas/User"
+  /api/users/:
+    get:  
+      summary: get all users
+      security: 
+        - BearerAuth: []
+      tags: 
+        - User
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Retrive Data Users
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/GetUsers" 
+  /api/user/create:
+    post:  
+      summary: Create new user for super admin role
+      security: 
+        - BearerAuth: []
+      tags: 
+        - User
+      consumes:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          "multipart/formData":
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateUser"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Post User data success
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/SuccessCreateUser"
+  /api/user/delete/{id}:
+      delete:  
+        summary: delete user by superadmin
+        security: 
+          - BearerAuth: []
+        tags: 
+          - User
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+         -   in: path
+             name: id
+             schema:
+                 type: integer
+             required: true
+             description: User id
+        responses:
+          200:
+            description: Delete User data success
+            content:
+              "application/json":
+                schema:
+                  allOf:
+                    - $ref: "#/components/schemas/JsendSuccess"
+                    - properties:
+                        data:
+                          type: array
+                          items:
+                            allOf:
+                              - properties:
+                                  id:
+                                    type: integer
+                              - $ref: "#/components/schemas/User"
