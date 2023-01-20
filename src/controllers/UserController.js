@@ -37,10 +37,16 @@ const createUser = async (req, res) => {
     province,
     gender,
   } = req.body;
+
   const role_id_arr = role_id.split(",");
   const pathFile = req.files[0].destination + req.files[0].filename;
   const result = await cloudinary.cloudinary.uploader.upload(pathFile);
+<<<<<<< HEAD
+  fs.unlinkSync(pathFile)
+  
+=======
   fs.unlinkSync(pathFile);
+>>>>>>> 679af1765895d13b4fb5eda84205d351ef23ccc9
   const avatar = result.url;
 
   const { status, message, data } = await UserService.createUser({

@@ -35,7 +35,7 @@ const deleteUser = async (id) => {
 const getUsers = async () => {
   try {
     const users = await userRepository.findAllUser();
-  
+
     return {
       status: 200,
       message: "Retrive Data Users",
@@ -118,9 +118,9 @@ const createUser = async ({
       city: city,
       first_name: first_name,
       gmaps: gmaps,
-      last_name,
-      phone_number,
-      province,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
       gender: gender,
       avatar: avatar,
     };
@@ -135,7 +135,6 @@ const createUser = async ({
         data: null,
       };
     } else {
-
       const idProfile = createProfile.id;
 
       const hashedPassword = await bcrypt.hash(password, 10);

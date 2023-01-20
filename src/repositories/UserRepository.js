@@ -58,6 +58,8 @@ const getUserById = async (profile_id) => {
   return getUser;
 };
 
+<<<<<<< HEAD
+=======
 const getUserByAdmin = async (profile_id) => {
   const [resultUser, metadataUser] = await sequelize.query(
     "SELECT prfl.*, ou.email, ou.not_locked, ou.enabled, ouu.role_id FROM profile prfl " +
@@ -103,6 +105,7 @@ const getUserByAdmin = async (profile_id) => {
 
   return resultArr;
 };
+>>>>>>> 679af1765895d13b4fb5eda84205d351ef23ccc9
 
 const createProfile = async (payload) => {
   const profile = await UserDetails.create(payload);
