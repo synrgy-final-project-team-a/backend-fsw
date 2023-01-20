@@ -41,7 +41,7 @@ const getUsers = async () => {
     data: users,
   };
 };
-const getDetailUser = async ({ email }) => {
+const getDetailUser = async ({ email, role }) => {
   try {
     const getUserId = await oauthUserRepository.getUserByEmail({ email });
     const profile_id = getUserId.profile_id;
@@ -57,7 +57,23 @@ const getDetailUser = async ({ email }) => {
     return {
       status: 200,
       message: "Get User data success",
-      data: getUser,
+      data: {
+        id: getUser.id,
+        address: getUser.address,
+        avatar: getUser.avatar,
+        city: getUser.city,
+        first_name: getUser.first_name,
+        gmaps: getUser.gmaps,
+        last_name: getUser.last_name,
+        phone_number: getUser.phone_number,
+        province: getUser.province,
+        gender: getUser.gender,
+        deleted_at: getUser.deleted_at,
+        created_at: getUser.created_at,
+        updated_at: getUser.updated_at,
+        email: getUserId.email,
+        role: role,
+      },
     };
   } catch (error) {
     return {
@@ -191,7 +207,7 @@ const createUser = async ({
 
 const getUserById = async ({ id }) => {
   try {
-    const getUser = await userRepository.getUserById(id);
+    const getUser = await userRepository.getUserByAdmin(id);
 
     if (!getUser) {
       return {
@@ -213,7 +229,7 @@ const getUserById = async ({ id }) => {
       data: null,
     };
   }
-}
+};
 const createProfile = async ({
   address,
   avatar,
@@ -252,4 +268,5 @@ module.exports = {
   createUser,
   deleteUser,
   getUserById,
+  createProfile,
 };
