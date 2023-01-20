@@ -33,13 +33,22 @@ const deleteUser = async (id) => {
 };
 
 const getUsers = async () => {
-  const users = await userRepository.findAllUser();
-
-  return {
-    status: 200,
-    message: "Retrive Data Users",
-    data: users,
-  };
+  try {
+    const users = await userRepository.findAllUser();
+  
+    return {
+      status: 200,
+      message: "Retrive Data Users",
+      data: users,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: "Internal Server Error",
+      data: null,
+    };
+  }
 };
 const getUserById = async ({ email }) => {
   try {
@@ -60,6 +69,7 @@ const getUserById = async ({ email }) => {
       data: getUser,
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: error.message,
@@ -109,7 +119,6 @@ const createUser = async ({
         data: null,
       };
     } else {
-      // console.log(createProfile, "----> ini createProfile");
 
       const idProfile = createProfile.id;
 
