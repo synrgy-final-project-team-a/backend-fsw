@@ -59,6 +59,7 @@ const getUserById = async (profile_id) => {
   return getUser;
 };
 
+
 const createProfile = async (payload) => {
   const profile = await UserDetails.create(payload);
   return profile;

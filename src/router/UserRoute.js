@@ -50,8 +50,5 @@ router.delete(
   deleteUser
 );
 
-// router.get("/api/users/", getAllUsers);
-// router.get("/api/user/detail", GetUserById);
-// router.post("/api/user/create", createUser);
 
 module.exports = router;
