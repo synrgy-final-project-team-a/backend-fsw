@@ -57,7 +57,7 @@ paths:
                             - $ref: "#/components/schemas/GetUsers" 
   /api/user/create:
     post:  
-      summary: get all users
+      summary: Create new user for super admin role
       security: 
         - BearerAuth: []
       tags: 
@@ -67,7 +67,7 @@ paths:
       requestBody:
         required: true
         content:
-          "application/json":
+          "multipart/formData":
             schema:
               allOf:
                 - $ref: "#/components/schemas/CreateUser"
@@ -90,3 +90,38 @@ paths:
                                 id:
                                   type: integer
                             - $ref: "#/components/schemas/SuccessCreateUser"
+  /api/user/delete/{id}:
+      delete:  
+        summary: delete user by superadmin
+        security: 
+          - BearerAuth: []
+        tags: 
+          - User
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+         -   in: path
+             name: id
+             schema:
+                 type: integer
+             required: true
+             description: User id
+        responses:
+          200:
+            description: Delete User data success
+            content:
+              "application/json":
+                schema:
+                  allOf:
+                    - $ref: "#/components/schemas/JsendSuccess"
+                    - properties:
+                        data:
+                          type: array
+                          items:
+                            allOf:
+                              - properties:
+                                  id:
+                                    type: integer
+                              - $ref: "#/components/schemas/User"

@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-
       models.Profile.hasMany(models.Oauth_user, {
         foreignKey: "profile_id",
       });
@@ -18,22 +17,28 @@ module.exports = (sequelize, DataTypes) => {
   }
   Profile.init(
     {
-      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
+      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
+      address: DataTypes.STRING,
+      avatar: DataTypes.STRING,
+      city: DataTypes.STRING,
       first_name: DataTypes.STRING,
+      gmaps: DataTypes.STRING,
       last_name: DataTypes.STRING,
       phone_number: DataTypes.STRING,
-      avatar: DataTypes.STRING,
       province: DataTypes.STRING,
       city: DataTypes.STRING,
-      address: DataTypes.STRING,
-      gmaps: DataTypes.STRING,
+      gender: DataTypes.STRING,
+      deleted_at: DataTypes.DATE,
     },
     {
-      timestamps: false,
       sequelize,
       modelName: "Profile",
       tableName: "profile",
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
+      deletedAt: 'deleted_at',
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
   return Profile;
