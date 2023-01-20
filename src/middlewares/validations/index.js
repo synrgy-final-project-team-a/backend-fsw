@@ -2,7 +2,7 @@ const fs = require("fs");
 const validation = (schema) => async (req, res, next) => {
   try {
     await schema.validate({
-      file: req.files?req.files[0]:null,
+      // file: req.files?req.files[0]:null,
       body: req.body,
       query: req.query,
       params: req.params,
@@ -12,8 +12,8 @@ const validation = (schema) => async (req, res, next) => {
     return next();
   } catch (err) {
     if (req.files) {
-      const pathFile = req.files[0].destination + req.files[0].filename;
-      fs.unlinkSync(pathFile)
+      // const pathFile = req.files[0].destination + req.files[0].filename;
+      // fs.unlinkSync(pathFile)
     }
     return res
       .status(400)

@@ -5,9 +5,9 @@ const { asyncForEach, yup } = require("../../utils/tools");
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 const createUserValidation = yup.object({
-  file: yup.object({
-    originalname: yup.string().required("Image must be required"),
-  }),
+  // file: yup.object({
+  //   originalname: yup.string().required("Image must be required"),
+  // }),
   body: yup
     .object({
       email: yup
