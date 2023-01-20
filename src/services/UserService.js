@@ -222,4 +222,4 @@ const createProfile = async ({
   }
 };
 
-module.exports = { getUsers, getUserById, createUser, createProfile };
+module.exports = { getUsers, getUserById, createUser, createProfile, deleteUser };
