@@ -39,36 +39,46 @@ const createUser = async (req, res) => {
   } = req.body;
 
   const role_id_arr = role_id.split(",");
-  const pathFile = req.files[0].destination + req.files[0].filename;
-  const result = await cloudinary.cloudinary.uploader.upload(pathFile);
-  fs.unlinkSync(pathFile)
-  
-  const avatar = result.url;
+  if (req.files[0] == undefined) {
+    console.log("hhhh");
+    res.status(400).send({
+      status: 400,
+      message: "Avatar must be uploaded",
+      data: null,
+    });
+  } else {
+    console.log(req.files[0].path, "filesnya");
+    // const pathFile = req.files[0].destination + req.files[0].filename;
+    const result = await cloudinary.cloudinary.uploader.upload(req.files[0].path);
+    // fs.unlinkSync(pathFile);
 
-  const { status, message, data } = await UserService.createUser({
-    email: email,
-    password: password,
-    role_id: role_id_arr,
-    address: address,
-    city: city,
-    first_name: first_name,
-    gmaps: gmaps,
-    last_name: last_name,
-    phone_number: phone_number,
-    province: province,
-    gender: gender,
-    avatar: avatar,
-    enabled: true,
-    not_expired: true,
-    not_locked: true,
-    credential_not_expired: true,
-  });
+    const avatar = result.url;
 
-  res.status(status).send({
-    status: status,
-    message: message,
-    data: data,
-  });
+    const { status, message, data } = await UserService.createUser({
+      email: email,
+      password: password,
+      role_id: role_id_arr,
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
+      gender: gender,
+      avatar: avatar,
+      enabled: true,
+      not_expired: true,
+      not_locked: true,
+      credential_not_expired: true,
+    });
+    
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  }
 };
 
 const getUserById = async (req, res) => {
