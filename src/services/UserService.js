@@ -204,7 +204,7 @@ const createUser = async ({
       }
     }
   } catch (error) {
-    console.log(error, "ini errornya");
+    
     return {
       status: 500,
       message: error.message,
@@ -230,7 +230,6 @@ const getUserById = async ({ id }) => {
       data: getUser,
     };
   } catch (error) {
-    console.log(error, "ini errornya");
     return {
       status: 500,
       message: error.message,
@@ -238,7 +237,9 @@ const getUserById = async ({ id }) => {
     };
   }
 };
-const createProfile = async ({
+
+const updateProfile = async ({
+  email,
   address,
   avatar,
   city,
@@ -250,19 +251,46 @@ const createProfile = async ({
   gender,
 }) => {
   try {
-    const profile = await userRepository.createProfile({
-      address,
-      avatar,
-      city,
-      first_name,
-      gmaps,
-      last_name,
-      phone_number,
-      province,
-      gender,
-    });
+    const getUser = await oauthUserRepository.getUserByEmail({ email });
+    if (!getUser) {
+      return {
+        status: 404,
+        message: "Email Not Found",
+        data: null,
+      };
+    } else {
+      const profileId = getUser.profile_id;
+
+      const updatedProfile = await userRepository.updateProfile({
+        id: profileId,
+        address: address,
+        avatar: avatar,
+        city: city,
+        first_name: first_name,
+        gmaps: gmaps,
+        last_name: last_name,
+        phone_number: phone_number,
+        province: province,
+        gender: gender,
+        updated_at: new Date(),
+      });
+      if (!updatedProfile) {
+        return {
+          status: 404,
+          message: "Can't update profil",
+          data: null,
+        };
+      } else {
+        const getProfile = await userRepository.getProfile(profileId);
+
+        return {
+          status: 200,
+          message: "Success Update profile",
+          data: getProfile,
+        };
+      }
+    }
   } catch (error) {
-    console.log(error, "ini errornya prfile");
     return {
       status: 500,
       message: error.message,
@@ -270,11 +298,12 @@ const createProfile = async ({
     };
   }
 };
+
 module.exports = {
   getUsers,
   getDetailUser,
   createUser,
   deleteUser,
   getUserById,
-  createProfile,
+  updateProfile,
 };

@@ -117,10 +117,50 @@ const deleteUser = async (id) => {
   });
 };
 
+const updateProfile = async ({
+  id,
+  address,
+  avatar,
+  city,
+  first_name,
+  gmaps,
+  last_name,
+  phone_number,
+  province,
+  gender,
+  updated_at,
+}) => {
+  
+  const updateProfile = await UserDetails.update(
+    {
+      id,
+      address,
+      avatar,
+      city,
+      first_name,
+      gmaps,
+      last_name,
+      phone_number,
+      province,
+      gender,
+      updated_at,
+    },
+    { where: { id } }
+  );
+  return updateProfile;
+};
+
+const getProfile = async (id) => {
+  const getProfil = await UserDetails.findOne({ where: { id: id } });
+  return getProfil;
+};
+
 module.exports = {
   findAllUser,
   getUserById,
   deleteUser,
   createProfile,
   getUserByAdmin,
+  updateProfile,
+  getProfile,
 };

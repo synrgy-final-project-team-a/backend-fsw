@@ -40,16 +40,16 @@ const createUser = async (req, res) => {
 
   const role_id_arr = role_id.split(",");
   if (req.files[0] == undefined) {
-    console.log("hhhh");
     res.status(400).send({
       status: 400,
       message: "Avatar must be uploaded",
       data: null,
     });
   } else {
-    console.log(req.files[0].path, "filesnya");
     // const pathFile = req.files[0].destination + req.files[0].filename;
-    const result = await cloudinary.cloudinary.uploader.upload(req.files[0].path);
+    const result = await cloudinary.cloudinary.uploader.upload(
+      req.files[0].path
+    );
     // fs.unlinkSync(pathFile);
 
     const avatar = result.url;
@@ -72,7 +72,7 @@ const createUser = async (req, res) => {
       not_locked: true,
       credential_not_expired: true,
     });
-    
+
     res.status(status).send({
       status: status,
       message: message,
@@ -88,10 +88,68 @@ const getUserById = async (req, res) => {
   res.status(data.status).json(data);
 };
 
+const editProfile = async (req, res) => {
+  const {
+    address,
+    city,
+    first_name,
+    gmaps,
+    last_name,
+    phone_number,
+    province,
+    gender,
+  } = req.body;
+
+  if (req.files == undefined) {
+    const { status, message, data } = await UserService.updateProfile({
+      email: req.user.user_name,
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
+      gender: gender,
+    });
+
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  } else {
+    const result = await cloudinary.cloudinary.uploader.upload(
+      req.files[0].path
+    );
+    const avatar = result.url;
+
+    const { status, message, data } = await UserService.updateProfile({
+      email: req.user.user_name,
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
+      gender: gender,
+      avatar: avatar,
+    });
+
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  }
+};
+
 module.exports = {
   getUserById,
   getAllUsers,
   getDetailUser,
   createUser,
   deleteUser,
+  editProfile,
 };
