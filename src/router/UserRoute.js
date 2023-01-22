@@ -4,6 +4,7 @@ const {
   createUser,
   deleteUser,
   getUserById,
+  editProfile,
 } = require("../controllers/UserController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
@@ -59,6 +60,8 @@ router.get(
   validation(getUserByIdValidation),
   getUserById
 );
+
+router.put("/api/profile/edit", auth.parseToken, upload.any(), editProfile);
 
 // router.get("/api/users/", getAllUsers);
 // router.get("/api/user/detail", GetUserById);
