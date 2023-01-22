@@ -160,3 +160,40 @@ paths:
                                   id:
                                     type: integer
                               - $ref: "#/components/schemas/User"
+  /api/profile/edit:
+    put:  
+      summary: Edit Profile (* Note Use Multipart/formData for edit profil with avatar, and use application/json for edit profile without avatar)
+      security: 
+        - BearerAuth: []
+      tags: 
+        - User
+      requestBody:
+        required: true
+        content:
+          "multipart/formData":
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/EditUser"
+          "application/json":
+            schema:
+                -$ref: "#/components/schemas/EditUser2"
+          
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Post User data success
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/SuccessEditUser"
