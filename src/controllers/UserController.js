@@ -100,7 +100,7 @@ const editProfile = async (req, res) => {
     gender,
   } = req.body;
 
-  if (req.files == undefined) {
+  if (req.files[0] == undefined) {
     const { status, message, data } = await UserService.updateProfile({
       email: req.user.user_name,
       address: address,
