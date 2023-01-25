@@ -128,14 +128,6 @@ const createUser = async ({
   credential_not_expired,
 }) => {
   try {
-    console.log(gender, "gender");
-    if (gender != "FEMALE" && gender != "MALE") {
-      return {
-        status: 400,
-        message: "Gender must be a FEMALE or MALE",
-        data: null,
-      };
-    }
     const payloadCreateProfile = {
       address: address,
       city: city,

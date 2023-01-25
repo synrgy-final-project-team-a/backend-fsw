@@ -58,7 +58,7 @@ const createUserValidation = yup.object({
       last_name: yup.string().required("Last name must be required."),
       phone_number: yup.string().required("Phone number must be required"),
       province: yup.string().required("Province must be required."),
-      gender: yup.string().required("Gender must be required."),
+      gender: yup.string().oneOf(['FEMALE', 'MALE']).required("Gender must be required."),
     })
     .noUnknown(true),
 });
