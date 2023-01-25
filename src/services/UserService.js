@@ -113,8 +113,8 @@ const createUser = async ({
   credential_not_expired,
 }) => {
   try {
-    console.log(gender, "gender")
-    if(gender != "FEMALE" && gender != "MALE"){
+    console.log(gender, "gender");
+    if (gender != "FEMALE" && gender != "MALE") {
       return {
         status: 400,
         message: "Gender must be a FEMALE or MALE",
@@ -212,7 +212,6 @@ const createUser = async ({
       }
     }
   } catch (error) {
-    
     return {
       status: 500,
       message: error.message,
@@ -225,7 +224,7 @@ const getUserById = async ({ id }) => {
   try {
     const getUser = await userRepository.getUserByAdmin(id);
 
-    if (!getUser) {
+    if (!getUser || getUser.length == 0) {
       return {
         status: 400,
         message: "User not found",
@@ -306,7 +305,6 @@ const updateProfile = async ({
     };
   }
 };
-
 module.exports = {
   getUsers,
   getDetailUser,
