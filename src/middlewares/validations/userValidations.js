@@ -95,8 +95,15 @@ const getUserByIdValidation = yup.object({
   }),
 });
 
+const getUsersBySuperadminValidation = yup.object({
+  query: yup.object({
+    page: yup.number().default(1).min(1, "Page Must Be Started At 1")
+  })
+})
+
 module.exports = {
   createUserValidation,
   deleteUserValidation,
   getUserByIdValidation,
+  getUsersBySuperadminValidation
 };

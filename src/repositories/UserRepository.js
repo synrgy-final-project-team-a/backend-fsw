@@ -2,13 +2,13 @@ const { sequelize, Sequelize } = require("../../db/models/index.js");
 const models = require("../../db/models/index.js");
 const UserDetails = models.user_details;
 
-const findAllUser = async () => {
+const findAllUser = async (startAt, endAt) => {
   const [resultUser, metadataUser] = await sequelize.query(
-    "SELECT prfl.*, ou.email, ou.not_locked, ou.enabled, ouu.role_id FROM profile prfl " +
+    "SELECT prfl.*,prfl.id as profile_id, ou.id as user_id, ou.email, ou.not_locked, ou.enabled, ouu.role_id FROM profile prfl " +
       "INNER JOIN oauth_user ou ON ou.profile_id = prfl.id " +
       "INNER JOIN oauth_user_role ouu ON ouu.user_id = ou.id " +
       "WHERE prfl.deleted_at IS NULL " +
-      "ORDER BY prfl.id ASC"
+      "ORDER BY prfl.id ASC "
   );
 
   const [resultRole, metadataRole] = await sequelize.query(
@@ -44,9 +44,11 @@ const findAllUser = async () => {
       delete usr.role_id;
       resultArr.push(usr);
     }
+    // delete usr.id;
   });
 
-  return resultArr;
+  const finalResult = resultArr.slice(startAt, endAt);
+  return {result: finalResult, total: resultArr.length};
 };
 
 const getUserById = async (profile_id) => {

@@ -32,14 +32,29 @@ const deleteUser = async (id) => {
   }
 };
 
-const getUsers = async () => {
+const getUsers = async (page) => {
   try {
-    const users = await userRepository.findAllUser();
+    let startAt = 0;
+    let endAt = 10
+    if (page>0) {
+      startAt = (10 * page);
+      endAt = 10*(page*2);
+    }
+
+    const users = await userRepository.findAllUser(startAt, endAt);
+
+    const resultArr = {
+      currentPage: parseInt(page+1),
+      totalPages: Math.ceil(users.total/10),
+      totalPerPage: 10,
+      totalContent: parseInt(users.total),
+      content: users.result
+    }
 
     return {
       status: 200,
       message: "Retrive Data Users",
-      data: users,
+      data: resultArr,
     };
   } catch (error) {
     console.log(error);

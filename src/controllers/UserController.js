@@ -10,7 +10,8 @@ const deleteUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const users = await UserService.getUsers();
+  const page = req.query.page - 1;
+  const users = await UserService.getUsers(page);
 
   res.status(users.status).json(users);
 };
