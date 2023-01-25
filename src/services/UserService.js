@@ -2,6 +2,7 @@ const userRepository = require("../repositories/UserRepository");
 const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
 const deleteUser = async (id) => {
   try {
@@ -17,10 +18,14 @@ const deleteUser = async (id) => {
       };
     }
 
+    let dataDeleted = {};
+    dataDeleted = getUserById;
+    dataDeleted.dataValues.deleted_at = moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss.sss[Z]").toString();
+
     return {
       status: 200,
       message: "Success Deleted User",
-      data: getUserById,
+      data: dataDeleted,
     };
   } catch (error) {
     console.log(error);
