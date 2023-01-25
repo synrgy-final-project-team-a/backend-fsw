@@ -47,11 +47,11 @@ const createUser = async (req, res) => {
       data: null,
     });
   } else {
-    // const pathFile = req.files[0].destination + req.files[0].filename;
+    const pathFile = req.files[0].destination + req.files[0].filename;
     const result = await cloudinary.cloudinary.uploader.upload(
       req.files[0].path
     );
-    // fs.unlinkSync(pathFile);
+    fs.unlinkSync(pathFile);
 
     const avatar = result.url;
 
