@@ -24,7 +24,7 @@ const createUserValidation = yup.object({
             return true;
           }
         ),
-      password: yup.string().min(6).required().typeError("Minimal Passsword 6"),
+      password: yup.string().min(8).required().typeError("Minimal Length Passsword 8"),
       role_id: yup
         .string()
         .required()
