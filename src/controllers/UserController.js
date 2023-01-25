@@ -1,5 +1,6 @@
 const UserService = require("../services/UserService");
 const cloudinary = require("../utils/cloudinaryConfig");
+const fs = require("fs");
 
 const deleteUser = async (req, res) => {
   const id = req.params.id;
@@ -17,6 +18,7 @@ const getAllUsers = async (req, res) => {
 const getDetailUser = async (req, res) => {
   const data = await UserService.getDetailUser({
     email: req.user.user_name,
+    role: req.user.role,
   });
   res.status(data.status).json(data);
 };
@@ -35,37 +37,48 @@ const createUser = async (req, res) => {
     province,
     gender,
   } = req.body;
+
   const role_id_arr = role_id.split(",");
+  if (req.files[0] == undefined) {
+    res.status(400).send({
+      status: 400,
+      message: "Avatar must be uploaded",
+      data: null,
+    });
+  } else {
+    // const pathFile = req.files[0].destination + req.files[0].filename;
+    const result = await cloudinary.cloudinary.uploader.upload(
+      req.files[0].path
+    );
+    // fs.unlinkSync(pathFile);
 
-  const result = await cloudinary.cloudinary.uploader.upload(
-    "../uploads/synrgy_logo.jpg"
-  );
-  const avatar = result.url;
+    const avatar = result.url;
 
-  const { status, message, data } = await UserService.createUser({
-    email: email,
-    password: password,
-    role_id: role_id_arr,
-    address: address,
-    city: city,
-    first_name: first_name,
-    gmaps: gmaps,
-    last_name: last_name,
-    phone_number: phone_number,
-    province: province,
-    gender: gender,
-    avatar: avatar,
-    enabled: true,
-    not_expired: true,
-    not_locked: true,
-    credential_not_expired: true,
-  });
+    const { status, message, data } = await UserService.createUser({
+      email: email,
+      password: password,
+      role_id: role_id_arr,
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
+      gender: gender,
+      avatar: avatar,
+      enabled: true,
+      not_expired: true,
+      not_locked: true,
+      credential_not_expired: true,
+    });
 
-  res.status(status).send({
-    status: status,
-    message: message,
-    data: data,
-  });
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  }
 };
 
 const getUserById = async (req, res) => {
@@ -75,10 +88,68 @@ const getUserById = async (req, res) => {
   res.status(data.status).json(data);
 };
 
+const editProfile = async (req, res) => {
+  const {
+    address,
+    city,
+    first_name,
+    gmaps,
+    last_name,
+    phone_number,
+    province,
+    gender,
+  } = req.body;
+
+  if (req.files[0] == undefined) {
+    const { status, message, data } = await UserService.updateProfile({
+      email: req.user.user_name,
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
+      gender: gender,
+    });
+
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  } else {
+    const result = await cloudinary.cloudinary.uploader.upload(
+      req.files[0].path
+    );
+    const avatar = result.url;
+
+    const { status, message, data } = await UserService.updateProfile({
+      email: req.user.user_name,
+      address: address,
+      city: city,
+      first_name: first_name,
+      gmaps: gmaps,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
+      gender: gender,
+      avatar: avatar,
+    });
+
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: data,
+    });
+  }
+};
+
 module.exports = {
   getUserById,
   getAllUsers,
   getDetailUser,
   createUser,
   deleteUser,
+  editProfile,
 };

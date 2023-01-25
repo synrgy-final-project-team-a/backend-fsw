@@ -115,10 +115,55 @@ components:
           type: array
           items:
             type: integer
+        address:
+          type: string
+        city:
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+        avatar:
+          type: string
+          format: binary
+       
     SuccessCreateUser:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
+        profile_id:
+          type: string
         email:
+          type: string
+        address:
+          type: string
+        avatar: 
+          type: string
+        city: 
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+        created_at:
           type: string
         role_id: 
           type: array
@@ -132,3 +177,77 @@ components:
           type: boolean
         credential_not_expired:
           type: boolean
+
+    EditUser:
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+        avatar:
+          type: string
+          format: binary
+    EditUser2:
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+
+    SuccessEditUser:
+      type: object
+      properties:
+        address:
+          type: string
+        avatar:
+          type: string
+          format: binary
+        city:
+          type: string
+        first_name:
+          type: string
+        gmaps:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        province:
+          type: string
+        gender:
+          type: string
+        deleted_at:
+          type: string
+          example: "2023-01-18T12:40:29.771Z"
+        created_at: 
+          type: string
+          example: "2023-01-18T12:40:29.771Z"
+        updated_at:
+          type: string
+          example: "2023-01-18T12:40:29.771Z"

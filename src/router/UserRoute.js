@@ -4,6 +4,7 @@ const {
   createUser,
   deleteUser,
   getUserById,
+  editProfile,
 } = require("../controllers/UserController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
@@ -18,14 +19,13 @@ const multer = require("multer");
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "../uploads/");
+      cb(null, "src/uploads/");
     },
     filename: (req, file, cb) => {
       cb(null, file.originalname);
     },
   }),
 });
-
 
 const router = express.Router();
 
@@ -38,10 +38,13 @@ router.get(
 router.get("/api/user/detail", auth.parseToken, getDetailUser);
 router.post(
   "/api/user/create",
-  // validation(createUserValidation),
-  upload.single("avatar"),
-  createUser)
-  
+  auth.parseToken,
+  auth.checkRole(["ROLE_SUPERUSER"]),
+  upload.any(),
+  validation(createUserValidation),
+  createUser
+);
+
 router.delete(
   "/api/user/delete/:id",
   auth.parseToken,
@@ -57,6 +60,8 @@ router.get(
   validation(getUserByIdValidation),
   getUserById
 );
+
+router.put("/api/profile/edit", auth.parseToken, upload.any(), editProfile);
 
 // router.get("/api/users/", getAllUsers);
 // router.get("/api/user/detail", GetUserById);

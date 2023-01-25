@@ -1,3 +1,4 @@
+const { sequelize } = require("../../db/models/index.js");
 const models = require("../../db/models/index.js");
 const OauthUser = models.oauth_user;
 
@@ -10,6 +11,17 @@ const getUserByEmail = async ({ email }) => {
   });
   return getUser;
 };
+
+const getUserByEmailWhereNotDeleted = async(email) => {
+  const [result, metadata] = await sequelize.query(
+    "SELECT * FROM profile prfl " +
+    "INNER JOIN oauth_user ou ON ou.profile_id = prfl.id " +
+    "WHERE prfl.deleted_at IS NULL AND " +
+    `ou.email = '${email}'`
+  );
+
+  return result;
+}
 
 const createUser = async (payload) => {
   return await OauthUser.create(payload);
@@ -35,4 +47,4 @@ const enabledUser = async (profileId) => {
   })
 }
 
-module.exports = { getUserByEmail, createUser, disabledUser, enabledUser};
+module.exports = { getUserByEmail, createUser, disabledUser, enabledUser, getUserByEmailWhereNotDeleted};

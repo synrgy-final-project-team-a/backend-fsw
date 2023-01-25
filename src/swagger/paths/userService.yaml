@@ -57,7 +57,7 @@ paths:
                             - $ref: "#/components/schemas/GetUsers" 
   /api/user/create:
     post:  
-      summary: get all users
+      summary: Create new user for super admin role
       security: 
         - BearerAuth: []
       tags: 
@@ -67,7 +67,7 @@ paths:
       requestBody:
         required: true
         content:
-          "application/json":
+          "multipart/formData":
             schema:
               allOf:
                 - $ref: "#/components/schemas/CreateUser"
@@ -160,3 +160,40 @@ paths:
                                   id:
                                     type: integer
                               - $ref: "#/components/schemas/User"
+  /api/profile/edit:
+    put:  
+      summary: Edit Profile (* Note Use Multipart/formData)
+      security: 
+        - BearerAuth: []
+      tags: 
+        - User
+      requestBody:
+        required: true
+        content:
+          "multipart/formData":
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/EditUser"
+          "application/json":
+            schema:
+                -$ref: "#/components/schemas/EditUser2"
+          
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Post User data success
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsendSuccess"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - properties:
+                                id:
+                                  type: integer
+                            - $ref: "#/components/schemas/SuccessEditUser"

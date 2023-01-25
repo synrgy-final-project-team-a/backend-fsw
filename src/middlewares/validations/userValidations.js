@@ -18,22 +18,21 @@ const createUserValidation = yup.object({
           "email_validations",
           "Email Already Exist, try another email!",
           async function (value, key) {
-            console.log(value);
-            const emailAlreadyExist = await oauthUserRepository.getUserByEmail({
-              email: value,
-            });
-            return emailAlreadyExist == null;
+            const emailAlreadyExist =
+              await oauthUserRepository.getUserByEmailWhereNotDeleted(value);
+            if (emailAlreadyExist.length > 0) return false;
+            return true;
           }
         ),
-      password: yup.string().min(6).required().typeError("Minimal Passsword 6"),
+      password: yup.string().min(8).required().typeError("Minimal Length Passsword 8"),
       role_id: yup
-        .array()
-        .of(yup.number())
+        .string()
+        .required()
         .test(
           "role_id_validations",
           "Role Not Exist",
           async function (value, key) {
-            const roles = key.parent.role_id;
+            const roles = key.parent.role_id.split(",");
             let roleNotValid = [];
             await asyncForEach(roles, async (element) => {
               let cekRole = await oauthRoleRepository.getById(element);
@@ -99,5 +98,5 @@ const getUserByIdValidation = yup.object({
 module.exports = {
   createUserValidation,
   deleteUserValidation,
-  getUserByIdValidation
+  getUserByIdValidation,
 };

@@ -33,15 +33,24 @@ const deleteUser = async (id) => {
 };
 
 const getUsers = async () => {
-  const users = await userRepository.findAllUser();
+  try {
+    const users = await userRepository.findAllUser();
 
-  return {
-    status: 200,
-    message: "Retrive Data Users",
-    data: users,
-  };
+    return {
+      status: 200,
+      message: "Retrive Data Users",
+      data: users,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: "Internal Server Error",
+      data: null,
+    };
+  }
 };
-const getDetailUser = async ({ email }) => {
+const getDetailUser = async ({ email, role }) => {
   try {
     const getUserId = await oauthUserRepository.getUserByEmail({ email });
     const profile_id = getUserId.profile_id;
@@ -57,9 +66,26 @@ const getDetailUser = async ({ email }) => {
     return {
       status: 200,
       message: "Get User data success",
-      data: getUser,
+      data: {
+        id: getUser.id,
+        address: getUser.address,
+        avatar: getUser.avatar,
+        city: getUser.city,
+        first_name: getUser.first_name,
+        gmaps: getUser.gmaps,
+        last_name: getUser.last_name,
+        phone_number: getUser.phone_number,
+        province: getUser.province,
+        gender: getUser.gender,
+        deleted_at: getUser.deleted_at,
+        created_at: getUser.created_at,
+        updated_at: getUser.updated_at,
+        email: getUserId.email,
+        role: role,
+      },
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: error.message,
@@ -87,14 +113,22 @@ const createUser = async ({
   credential_not_expired,
 }) => {
   try {
+    console.log(gender, "gender");
+    if (gender != "FEMALE" && gender != "MALE") {
+      return {
+        status: 400,
+        message: "Gender must be a FEMALE or MALE",
+        data: null,
+      };
+    }
     const payloadCreateProfile = {
       address: address,
       city: city,
       first_name: first_name,
       gmaps: gmaps,
-      last_name,
-      phone_number,
-      province,
+      last_name: last_name,
+      phone_number: phone_number,
+      province: province,
       gender: gender,
       avatar: avatar,
     };
@@ -109,8 +143,6 @@ const createUser = async ({
         data: null,
       };
     } else {
-      // console.log(createProfile, "----> ini createProfile");
-
       const idProfile = createProfile.id;
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -158,6 +190,7 @@ const createUser = async ({
           message: "Post User data success",
           data: {
             id: userId,
+            profile_id: idProfile,
             email: payloadCreateUser.email,
             address: createProfile.address,
             avatar: createProfile.avatar,
@@ -179,7 +212,6 @@ const createUser = async ({
       }
     }
   } catch (error) {
-    console.log(error, "ini errornya");
     return {
       status: 500,
       message: error.message,
@@ -190,9 +222,9 @@ const createUser = async ({
 
 const getUserById = async ({ id }) => {
   try {
-    const getUser = await userRepository.getUserById(id);
+    const getUser = await userRepository.getUserByAdmin(id);
 
-    if (!getUser) {
+    if (!getUser || getUser.length == 0) {
       return {
         status: 400,
         message: "User not found",
@@ -212,7 +244,9 @@ const getUserById = async ({ id }) => {
     };
   }
 };
-const createProfile = async ({
+
+const updateProfile = async ({
+  email,
   address,
   avatar,
   city,
@@ -224,19 +258,46 @@ const createProfile = async ({
   gender,
 }) => {
   try {
-    const profile = await userRepository.createProfile({
-      address,
-      avatar,
-      city,
-      first_name,
-      gmaps,
-      last_name,
-      phone_number,
-      province,
-      gender,
-    });
+    const getUser = await oauthUserRepository.getUserByEmail({ email });
+    if (!getUser) {
+      return {
+        status: 404,
+        message: "Email Not Found",
+        data: null,
+      };
+    } else {
+      const profileId = getUser.profile_id;
+
+      const updatedProfile = await userRepository.updateProfile({
+        id: profileId,
+        address: address,
+        avatar: avatar,
+        city: city,
+        first_name: first_name,
+        gmaps: gmaps,
+        last_name: last_name,
+        phone_number: phone_number,
+        province: province,
+        gender: gender,
+        updated_at: new Date(),
+      });
+      if (!updatedProfile) {
+        return {
+          status: 404,
+          message: "Can't update profil",
+          data: null,
+        };
+      } else {
+        const getProfile = await userRepository.getProfile(profileId);
+
+        return {
+          status: 200,
+          message: "Success Update profile",
+          data: getProfile,
+        };
+      }
+    }
   } catch (error) {
-    console.log(error, "ini errornya prfile");
     return {
       status: 500,
       message: error.message,
@@ -250,4 +311,5 @@ module.exports = {
   createUser,
   deleteUser,
   getUserById,
+  updateProfile,
 };
