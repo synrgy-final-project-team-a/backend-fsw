@@ -38,6 +38,13 @@ paths:
         - application/json
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            required: true
+            description: page
       responses:
         200:
           description: Retrive Data Users
@@ -48,13 +55,24 @@ paths:
                   - $ref: "#/components/schemas/JsendSuccess"
                   - properties:
                       data:
-                        type: array
-                        items:
-                          allOf:
-                            - properties:
-                                id:
-                                  type: integer
-                            - $ref: "#/components/schemas/GetUsers" 
+                        type: object
+                        properties:
+                          currentPage:
+                            type: integer
+                          totalPages:
+                            type: integer
+                          totalPerPage:
+                            type: integer
+                          currentContent:
+                            type: integer
+                          content:
+                            type: array
+                            items:
+                              allOf:
+                                - properties:
+                                    id:
+                                      type: string
+                                - $ref: "#/components/schemas/GetUsers" 
   /api/user/create:
     post:  
       summary: Create new user for super admin role

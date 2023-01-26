@@ -133,8 +133,15 @@ components:
           type: string
         enabled:
           type: string
-        role_name:
+        user_id:
           type: string
+        profile_id:
+          type: string
+        role_name:
+          type: array
+          items:
+            type: string
+          example: ["ROLE_SUPERUSER", "ROLE_SK"]
     
     CreateUser:
       type: object

@@ -13,6 +13,7 @@ const {
   createUserValidation,
   deleteUserValidation,
   getUserByIdValidation,
+  getUsersBySuperadminValidation
 } = require("../middlewares/validations/userValidations");
 const multerUpload = require("../utils/multer");
 const multer = require("multer");
@@ -33,6 +34,7 @@ router.get(
   "/api/users/",
   auth.parseToken,
   auth.checkRole(["ROLE_SUPERUSER"]),
+  validation(getUsersBySuperadminValidation),
   getAllUsers
 );
 router.get("/api/user/detail", auth.parseToken, getDetailUser);

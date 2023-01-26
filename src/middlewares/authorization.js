@@ -2,12 +2,12 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 exports.parseToken = async (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(' ')[1];
-
   try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
     if (!token) {
-      res.status(401).json({
+      return res.status(401).json({
         code: 401,
         status: "Token not found",
         data: null
@@ -15,7 +15,7 @@ exports.parseToken = async (req, res, next) => {
     }
     const decoded = await jwt.verify(token, process.env.TOKEN_SECRET);
     if (decoded == null) {
-      res.status(401).json({
+      return res.status(401).json({
         code: 401,
         message: "Unautorized access",
         data: null
@@ -29,7 +29,7 @@ exports.parseToken = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(403).json({
+    return res.status(403).json({
       code: 403,
       status: "Token expired",
       data: null
@@ -47,7 +47,7 @@ exports.checkRole = function (roles = []) {
     if (cek.length == 0) {
       console.log("your roles: " + userRoles);
       console.log("need roles: " + roles);
-      res.status(403).json({
+      return res.status(403).json({
         code: 403,
         message: "Forbidden, role not authorized",
         data: null
