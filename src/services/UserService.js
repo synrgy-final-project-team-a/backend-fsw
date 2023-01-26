@@ -234,7 +234,7 @@ const getUserById = async ({ id }) => {
     return {
       status: 200,
       message: "Get User data success",
-      data: getUser,
+      data: getUser[0],
     };
   } catch (error) {
     return {
