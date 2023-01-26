@@ -57,8 +57,8 @@ router.delete(
 
 router.get(
   "/api/user/detail/:id",
-  // auth.parseToken,
-  // auth.checkRole(["ROLE_SUPERUSER"]),
+  auth.parseToken,
+  auth.checkRole(["ROLE_SUPERUSER"]),
   validation(getUserByIdValidation),
   getUserById
 );
