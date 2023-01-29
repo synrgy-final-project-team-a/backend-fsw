@@ -12,8 +12,8 @@ const validation = (schema) => async (req, res, next) => {
     return next();
   } catch (err) {
     if (req.files) {
-      // const pathFile = req.files[0].destination + req.files[0].filename;
-      // fs.unlinkSync(pathFile)
+      const pathFile = req.files[0].destination + req.files[0].filename;
+      fs.unlinkSync(pathFile)
     }
     return res
       .status(400)

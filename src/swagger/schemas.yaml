@@ -67,42 +67,81 @@ components:
     User:
       type: object
       properties:
+        address:
+          type: string
+        avatar:
+          type: string
+        city:
+          type: string
         first_name:
+          type: string
+        gmaps:
           type: string
         last_name:
           type: string
         phone_number:
           type: string
-        avatar:
-          type: string
         province:
           type: string
-        city:
+        gender:
           type: string
-        address:
+        created_at:
           type: string
-        gmaps:
+        updated_at:
+          type: string
+        deleted_at:
+          type: string
+        email:
+          type: string
+        not_locked:
+          type: string
+        enabled:
+          type: string
+        role_name:
           type: string
     
     GetUsers:
       type: object
       properties:
+        address:
+          type: string
+        avatar:
+          type: string
+        city:
+          type: string
         first_name:
+          type: string
+        gmaps:
           type: string
         last_name:
           type: string
         phone_number:
           type: string
-        avatar:
-          type: string
         province:
           type: string
-        city:
+        gender:
           type: string
-        address:
+        created_at:
           type: string
-        gmaps:
+        updated_at:
           type: string
+        deleted_at:
+          type: string
+        email:
+          type: string
+        not_locked:
+          type: string
+        enabled:
+          type: string
+        user_id:
+          type: string
+        profile_id:
+          type: string
+        role_name:
+          type: array
+          items:
+            type: string
+          example: ["ROLE_SUPERUSER", "ROLE_SK"]
     
     CreateUser:
       type: object

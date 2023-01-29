@@ -2,6 +2,7 @@ const userRepository = require("../repositories/UserRepository");
 const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
 const deleteUser = async (id) => {
   try {
@@ -17,10 +18,14 @@ const deleteUser = async (id) => {
       };
     }
 
+    let dataDeleted = {};
+    dataDeleted = getUserById;
+    dataDeleted.dataValues.deleted_at = moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss.sss[Z]").toString();
+
     return {
       status: 200,
       message: "Success Deleted User",
-      data: getUserById,
+      data: dataDeleted,
     };
   } catch (error) {
     console.log(error);
@@ -32,14 +37,29 @@ const deleteUser = async (id) => {
   }
 };
 
-const getUsers = async () => {
+const getUsers = async (page) => {
   try {
-    const users = await userRepository.findAllUser();
+    let startAt = 0;
+    let endAt = 10
+    if (page>0) {
+      startAt = (10 * page);
+      endAt = 10*(page*2);
+    }
+
+    const users = await userRepository.findAllUser(startAt, endAt);
+
+    const resultArr = {
+      currentPage: parseInt(page+1),
+      totalPages: Math.ceil(users.total/10),
+      totalPerPage: 10,
+      totalContent: parseInt(users.total),
+      content: users.result
+    }
 
     return {
       status: 200,
       message: "Retrive Data Users",
-      data: users,
+      data: resultArr,
     };
   } catch (error) {
     console.log(error);
@@ -113,7 +133,7 @@ const createUser = async ({
   credential_not_expired,
 }) => {
   try {
-    if (gender != "FEMALE" && gender != "MALE") {
+    if(gender != "FEMALE" && gender != "MALE"){
       return {
         status: 400,
         message: "Gender must be a FEMALE or MALE",
@@ -223,7 +243,7 @@ const getUserById = async ({ id }) => {
   try {
     const getUser = await userRepository.getUserByAdmin(id);
 
-    if (!getUser) {
+    if (!getUser || getUser.length == 0) {
       return {
         status: 400,
         message: "User not found",
@@ -233,7 +253,7 @@ const getUserById = async ({ id }) => {
     return {
       status: 200,
       message: "Get User data success",
-      data: getUser,
+      data: getUser[0],
     };
   } catch (error) {
     return {
@@ -318,7 +338,6 @@ const updateProfile = async ({
     };
   }
 };
-
 module.exports = {
   getUsers,
   getDetailUser,
