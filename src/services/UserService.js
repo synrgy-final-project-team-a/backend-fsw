@@ -133,6 +133,13 @@ const createUser = async ({
   credential_not_expired,
 }) => {
   try {
+    if(gender != "FEMALE" && gender != "MALE"){
+      return {
+        status: 400,
+        message: "Gender must be a FEMALE or MALE",
+        data: null,
+      };
+    }
     const payloadCreateProfile = {
       address: address,
       city: city,
@@ -270,6 +277,20 @@ const updateProfile = async ({
   gender,
 }) => {
   try {
+    if(email == "" || address == "" || avatar == "" || city == "" || first_name == "" || gmaps == "" || last_name == "" || phone_number == "" || province == ""){
+       return {
+         status: 400,
+         message: "Data cant be string empty, please fill the field",
+         data: null,
+       };
+    }
+      if (gender != null && gender != "FEMALE" && gender != "MALE") {
+        return {
+          status: 400,
+          message: "Gender must be a FEMALE or MALE",
+          data: null,
+        };
+      }
     const getUser = await oauthUserRepository.getUserByEmail({ email });
     if (!getUser) {
       return {
