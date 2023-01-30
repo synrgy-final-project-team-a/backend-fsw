@@ -46,6 +46,16 @@ const createUser = async (req, res) => {
       data: null,
     });
   } else {
+    if (
+      req.files[0].mimetype !== "image/jpeg" &&
+      req.files[0].mimetype !== "image/png"
+    ) {
+      return res.status(400).send({
+        status: 400,
+        message: "Avatar must be jpg or png mimetype.",
+        data: null,
+      });
+    }
     // const pathFile = req.files[0].destination + req.files[0].filename;
     const result = await cloudinary.cloudinary.uploader.upload(
       req.files[0].path
@@ -99,7 +109,6 @@ const editProfile = async (req, res) => {
     province,
     gender,
   } = req.body;
-
   if (req.files[0] == undefined) {
     const { status, message, data } = await UserService.updateProfile({
       email: req.user.user_name,
@@ -119,6 +128,16 @@ const editProfile = async (req, res) => {
       data: data,
     });
   } else {
+    if (
+      req.files[0].mimetype !== "image/jpeg" &&
+      req.files[0].mimetype !== "image/png"
+    ) {
+      return res.status(400).send({
+        status: 400,
+        message: "Avatar must be jpg or png mimetype.",
+        data: null,
+      });
+    }
     const result = await cloudinary.cloudinary.uploader.upload(
       req.files[0].path
     );
