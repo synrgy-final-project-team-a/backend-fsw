@@ -48,7 +48,7 @@ const findAllUser = async (startAt, endAt) => {
   });
 
   const finalResult = resultArr.slice(startAt, endAt);
-  return {result: finalResult, total: resultArr.length};
+  return { result: finalResult, total: resultArr.length };
 };
 
 const getUserById = async (profile_id) => {
@@ -132,7 +132,6 @@ const updateProfile = async ({
   gender,
   updated_at,
 }) => {
-  
   const updateProfile = await UserDetails.update(
     {
       id,

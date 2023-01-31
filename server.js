@@ -5,7 +5,9 @@ const UserRoute = require("./src/router/UserRoute");
 const bodyparser = require("body-parser");
 const multer = require("multer");
 // const upload = multer();
-
+// chat
+const http = require("http");
+const { Server } = require("socket.io");
 dotenv.config();
 
 const app = express();
@@ -31,6 +33,32 @@ app.get("/", (req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(UserRoute);
 
-app.listen(PORT, () =>
+// chat
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(data);
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
+
+  socket.on("send_message", (data) => {
+    console.log(data);
+    socket.to(data.room).emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
+server.listen(PORT, () =>
   console.log(`Example app listening on port http://localhost:${PORT}`)
 );
