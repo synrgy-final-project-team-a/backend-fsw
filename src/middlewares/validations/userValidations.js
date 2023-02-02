@@ -24,7 +24,11 @@ const createUserValidation = yup.object({
             return true;
           }
         ),
-      password: yup.string().min(8).required().typeError("Minimal Length Passsword 8"),
+      password: yup
+        .string()
+        .min(8)
+        .required()
+        .typeError("Minimal Length Passsword 8"),
       role_id: yup
         .string()
         .required()
@@ -58,7 +62,14 @@ const createUserValidation = yup.object({
       last_name: yup.string().required("Last name must be required."),
       phone_number: yup.string().required("Phone number must be required"),
       province: yup.string().required("Province must be required."),
-      gender: yup.string().oneOf(['FEMALE', 'MALE']).required("Gender must be required."),
+      gender: yup
+        .string()
+        .oneOf(["FEMALE", "MALE"])
+        .required("Gender must be required."),
+      bank_account: yup.string().required("Bank account must be required."),
+      bank_name: yup.string().required("Bank name must be required."),
+      bank_username: yup.string().required("username bank must be required."),
+      status: yup.string().required("status can't be null."),
     })
     .noUnknown(true),
 });
@@ -97,13 +108,13 @@ const getUserByIdValidation = yup.object({
 
 const getUsersBySuperadminValidation = yup.object({
   query: yup.object({
-    page: yup.number().default(1).min(1, "Page Must Be Started At 1")
-  })
-})
+    page: yup.number().default(1).min(1, "Page Must Be Started At 1"),
+  }),
+});
 
 module.exports = {
   createUserValidation,
   deleteUserValidation,
   getUserByIdValidation,
-  getUsersBySuperadminValidation
+  getUsersBySuperadminValidation,
 };

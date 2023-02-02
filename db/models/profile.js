@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       gender: DataTypes.STRING,
       deleted_at: DataTypes.DATE,
+      bank_account: DataTypes.STRING,
+      bank_name: DataTypes.STRING,
+      bank_username: DataTypes.STRING,
+      status: DataTypes.STRING,
     },
     {
       sequelize,
@@ -36,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "profile",
       timestamps: true,
       paranoid: true,
-      deletedAt: 'deleted_at',
+      deletedAt: "deleted_at",
       createdAt: "created_at",
       updatedAt: "updated_at",
     }
