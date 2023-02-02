@@ -49,10 +49,16 @@ io.on("connection", (socket) => {
     console.log(data);
     console.log(`User with ID: ${socket.id} joined room: ${data}`);
   });
+  socket.on("join_notification", (data) => {
+    socket.join(data);
+    console.log(data);
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
 
   socket.on("send_message", (data) => {
     console.log(data);
     socket.to(data.room_id).emit("receive_message", data);
+    socket.to("notif123").emit("receive_notification", data);
   });
 
   socket.on("disconnect", () => {
