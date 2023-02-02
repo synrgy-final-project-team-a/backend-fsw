@@ -20,7 +20,9 @@ const deleteUser = async (id) => {
 
     let dataDeleted = {};
     dataDeleted = getUserById;
-    dataDeleted.dataValues.deleted_at = moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss.sss[Z]").toString();
+    dataDeleted.dataValues.deleted_at = moment(Date.now())
+      .format("YYYY-MM-DDTHH:mm:ss.sss[Z]")
+      .toString();
 
     return {
       status: 200,
@@ -40,21 +42,21 @@ const deleteUser = async (id) => {
 const getUsers = async (page) => {
   try {
     let startAt = 0;
-    let endAt = 10
-    if (page>0) {
-      startAt = (10 * page);
-      endAt = 10*(page*2);
+    let endAt = 10;
+    if (page > 0) {
+      startAt = 10 * page;
+      endAt = 10 * (page * 2);
     }
 
     const users = await userRepository.findAllUser(startAt, endAt);
 
     const resultArr = {
-      currentPage: parseInt(page+1),
-      totalPages: Math.ceil(users.total/10),
+      currentPage: parseInt(page + 1),
+      totalPages: Math.ceil(users.total / 10),
       totalPerPage: 10,
       totalContent: parseInt(users.total),
-      content: users.result
-    }
+      content: users.result,
+    };
 
     return {
       status: 200,
@@ -100,6 +102,10 @@ const getDetailUser = async ({ email, role }) => {
         deleted_at: getUser.deleted_at,
         created_at: getUser.created_at,
         updated_at: getUser.updated_at,
+        bank_account: getUser.bank_account,
+        bank_name: getUser.bank_name,
+        bank_username: getUser.bank_username,
+        status: getUser.status,
         email: getUserId.email,
         role: role,
       },
@@ -127,19 +133,16 @@ const createUser = async ({
   province,
   gender,
   avatar,
+  bank_account,
+  bank_name,
+  bank_username,
+  status,
   enabled,
   not_expired,
   not_locked,
   credential_not_expired,
 }) => {
   try {
-    if(gender != "FEMALE" && gender != "MALE"){
-      return {
-        status: 400,
-        message: "Gender must be a FEMALE or MALE",
-        data: null,
-      };
-    }
     const payloadCreateProfile = {
       address: address,
       city: city,
@@ -150,7 +153,13 @@ const createUser = async ({
       province: province,
       gender: gender,
       avatar: avatar,
+      status: status,
+      bank_account: bank_account,
+      bank_name: bank_name,
+      bank_username: bank_username,
+      updated_at: new Date(),
     };
+    console.log(payloadCreateProfile);
     const createProfile = await userRepository.createProfile(
       payloadCreateProfile
     );
@@ -220,7 +229,11 @@ const createUser = async ({
             phone_number: createProfile.phone_number,
             province: createProfile.province,
             gender: createProfile.gender,
-            created_at: createProfile.created_at,
+            updated_at: createProfile.updated_at,
+            bank_account: createProfile.bank_account,
+            bank_name: createProfile.bank_name,
+            bank_username: createProfile.bank_username,
+            status: createProfile.status,
             role_id: role_id,
             enabled: payloadCreateUser.enabled,
             not_expired: payloadCreateUser.not_expired,
@@ -275,22 +288,41 @@ const updateProfile = async ({
   phone_number,
   province,
   gender,
+  bank_account,
+  bank_name,
+  bank_username,
+  status,
 }) => {
   try {
-    if(email == "" || address == "" || avatar == "" || city == "" || first_name == "" || gmaps == "" || last_name == "" || phone_number == "" || province == ""){
-       return {
-         status: 400,
-         message: "Data cant be string empty, please fill the field",
-         data: null,
-       };
+    if (
+      email == "" ||
+      address == "" ||
+      avatar == "" ||
+      city == "" ||
+      first_name == "" ||
+      gmaps == "" ||
+      last_name == "" ||
+      phone_number == "" ||
+      province == "" ||
+      gender == "" ||
+      bank_account == "" ||
+      bank_name == "" ||
+      bank_username == "" ||
+      status == ""
+    ) {
+      return {
+        status: 400,
+        message: "Data cant be string empty, please fill the field",
+        data: null,
+      };
     }
-      if (gender != null && gender != "FEMALE" && gender != "MALE") {
-        return {
-          status: 400,
-          message: "Gender must be a FEMALE or MALE",
-          data: null,
-        };
-      }
+    if (gender != null && gender != "FEMALE" && gender != "MALE") {
+      return {
+        status: 400,
+        message: "Gender must be a FEMALE or MALE",
+        data: null,
+      };
+    }
     const getUser = await oauthUserRepository.getUserByEmail({ email });
     if (!getUser) {
       return {
@@ -312,6 +344,10 @@ const updateProfile = async ({
         phone_number: phone_number,
         province: province,
         gender: gender,
+        bank_account: bank_account,
+        bank_name: bank_name,
+        bank_username: bank_username,
+        status: status,
         updated_at: new Date(),
       });
       if (!updatedProfile) {

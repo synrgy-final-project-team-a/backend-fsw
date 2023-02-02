@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Oauth_user.init(
     {
-      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement:true },
+      id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
       not_expired: DataTypes.BOOLEAN,
       not_locked: DataTypes.BOOLEAN,
       credential_not_expired: DataTypes.BOOLEAN,
@@ -28,15 +28,19 @@ module.exports = (sequelize, DataTypes) => {
       otp: DataTypes.STRING,
       otp_expired_date: DataTypes.NOW,
       password: DataTypes.STRING,
-      email: {type: DataTypes.STRING, unique: false},
+      email: { type: DataTypes.STRING, unique: false },
       verify_token: DataTypes.STRING,
       profile_id: DataTypes.BIGINT,
     },
     {
-      timestamps: false,
+      timestamps: true,
       sequelize,
       modelName: "Oauth_user",
       tableName: "oauth_user",
+       paranoid: true,
+      deletedAt: "deleted_at",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
   return Oauth_user;
