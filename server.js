@@ -94,7 +94,7 @@ io.on("connection", (socket) => {
    * **/
 
   socket.on("send-message", (data) => { // data -> {roomId:number, message:string, sender:string(token)}
-    const sendMessage = chatService.sendChat(data);
+    const sendMessage = chatService.sendMessage(data);
     if (sendMessage.status == 200) {
       socket.to(sendMessage.data.room_chat_id).emit("receive-message", sendMessage.data);
 

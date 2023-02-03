@@ -32,7 +32,6 @@ const sendChat = async(data) => {
 
 const loadMessageService = async(roomId) => {
     const messages = await chatRepository.loadMessageByKostId(roomId);
-    console.log(messages);
 
     return {
         status : 200,
@@ -88,4 +87,4 @@ const sendMessage = async(data) => {
 }
 
 
-module.exports = {sendChat, loadMessageService}
+module.exports = {sendChat, loadMessageService, sendMessage}

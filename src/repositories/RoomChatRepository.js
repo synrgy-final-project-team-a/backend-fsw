@@ -26,8 +26,6 @@ const cekRoom = async(userId, kostId, userRole) => {
         })
     }
 
-    console.log(room);
-
     return room[0];
 }
 
