@@ -47,9 +47,9 @@ const createRoomChat = async(seekerId, kostId, userRole) => {
     }
 }
 
-const joinRoomChat = async(tokenUser) => {
+const joinRoomChat = async(data) => {
     try {
-        const decoded = await jwt.verify(tokenUser, process.env.TOKEN_SECRET);
+        const decoded = await jwt.verify(data.token, process.env.TOKEN_SECRET);
     
         if (decoded == null) {
           return {
@@ -58,7 +58,8 @@ const joinRoomChat = async(tokenUser) => {
             data: null
           };
         } else {
-            return await userService.getDetailUser({email: decoded.user_name, role:decoded.role[0]});
+            // const detailUser = await userService.getDetailUser({email: decoded.user_name, role:decoded.role[0]});
+            return await getDetailRoomChat(decoded.user_name, decoded.role[0], data.roomId);
         }
     } catch (error) {
         console.log(error);
@@ -120,7 +121,7 @@ const getDetailRoomChat = async(email, userRole, roomId) => {
         return {
             status: 200,
             message: "Berhail Get Detail Room",
-            data: roomChat[0]
+            data: {...roomChat[0], role_user: userRole}
         }
     } catch (error) {
         console.log(error);

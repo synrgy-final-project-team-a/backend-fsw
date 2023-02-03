@@ -12,7 +12,11 @@ const loadMessageByKostId = async(roomId) => {
     return loadMessage;
 }
 
+const saveMessage = async(payload) => {
+    return await chatModel.create(payload);
+}
+
 
 module.exports = {
-    loadMessageByKostId
+    loadMessageByKostId, saveMessage
 }
