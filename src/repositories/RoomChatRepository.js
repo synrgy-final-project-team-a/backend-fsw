@@ -32,22 +32,22 @@ const cekRoom = async(userId, kostId, userRole) => {
 }
 
 const getUserRoomChats = async(userId, userRole) => {
-    let rooms = [];
+    let rooms = [[],null];
     if (userRole == "ROLE_SK") {
-        rooms = roomChat.findAll({
-            where: {
-                seeker_id: userId
-            }
-        });
+        rooms = await sequelize.query(
+            "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc " +
+            "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
+            `WHERE seeker_id = ${userId}`
+        );
     } else if (userRole == "ROLE_TN") {
-        rooms = roomChat.findAll({
-            where: {
-                tenant_id: userId
-            }
-        });
+        rooms = await sequelize.query(
+            "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc " +
+            "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
+            `WHERE tenant_id = ${userId}`
+        );
     }
 
-    return rooms;
+    return rooms[0];
 }
 
 const findRoomById = async(roomId) => {

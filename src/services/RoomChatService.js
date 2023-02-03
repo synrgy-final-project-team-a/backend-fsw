@@ -1,13 +1,10 @@
 const roomChat = require("../repositories/RoomChatRepository")
 const kost = require("../repositories/KostRepository")
+const userService = require("./UserService");
 
 const createRoomChat = async(seekerId, kostId, userRole) => {
     try {
-        console.log("seeker id");
-        console.log(seekerId);
         const cekRoom = await roomChat.cekRoom(seekerId, kostId, userRole);
-        console.log("room");
-        console.log(cekRoom);
 
         if (cekRoom !== undefined) {
             return {
@@ -73,8 +70,30 @@ const joinRoomChat = async(tokenUser) => {
     }
 }
 
+const loadRoomChat = async(email, userRole) => {
+    try {
+        const userDetail = await userService.getDetailUser({email: email, role:userRole});
+        if (userDetail.status != 200) {
+            return userDetail;
+        }
+        const getUserRoomChats = await roomChat.getUserRoomChats(userDetail.data.id, userRole);
+
+        return {
+            status: 200,
+            message: getUserRoomChats.length == 0 ? "Belum ada pesan" : "Berhasil mendapatkan riwayat room chat",
+            data: getUserRoomChats
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            message: "Internal Server Error",
+            data: null
+        }
+    }
+}
 
 
 module.exports = {
-    createRoomChat, joinRoomChat
+    createRoomChat, joinRoomChat, loadRoomChat
 }

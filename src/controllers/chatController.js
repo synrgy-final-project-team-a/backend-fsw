@@ -26,4 +26,10 @@ const loadMessageController = async(req, res) => {
     return res.status(loadMessage.code).json(loadMessage);
 }
 
-module.exports = {goToRoomChat, loadMessageController}
+const loadRoomMessageController = async(req, res) => {
+    const loadRoom = await RoomChatService.loadRoomChat(req.user.user_name, req.user.role[0])
+
+    return res.status(loadRoom.status).json(loadRoom);
+}
+
+module.exports = {goToRoomChat, loadMessageController, loadRoomMessageController}

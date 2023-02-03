@@ -1,5 +1,5 @@
 const {
-    goToRoomChat, loadMessageController
+    goToRoomChat, loadMessageController, loadRoomMessageController
 } = require("../controllers/chatController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
@@ -22,6 +22,12 @@ router.post(
     auth.parseToken,
     validation(loadChatValidation),
     loadMessageController
+);
+
+router.get(
+    "/api/load-room",
+    auth.parseToken,
+    loadRoomMessageController
 );
 
 module.exports = router;
