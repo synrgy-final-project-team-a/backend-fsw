@@ -1,6 +1,7 @@
 const userRepository = require("../repositories/UserRepository");
 const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
+const oauthRoleRepository = require("../repositories/OauthRoleRepository");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
 
@@ -159,7 +160,6 @@ const createUser = async ({
       bank_username: bank_username,
       updated_at: new Date(),
     };
-    console.log(payloadCreateProfile);
     const createProfile = await userRepository.createProfile(
       payloadCreateProfile
     );
@@ -213,6 +213,12 @@ const createUser = async ({
           };
         }
 
+        const roleName = [];
+        for (const iterator of role_id) {
+          const getRole = await oauthRoleRepository.getById(iterator);
+          roleName.push(getRole.dataValues.name);
+        }
+
         return {
           status: 200,
           message: "Post User data success",
@@ -234,7 +240,7 @@ const createUser = async ({
             bank_name: createProfile.bank_name,
             bank_username: createProfile.bank_username,
             status: createProfile.status,
-            role_id: role_id,
+            role_id: roleName,
             enabled: payloadCreateUser.enabled,
             not_expired: payloadCreateUser.not_expired,
             not_locked: payloadCreateUser.not_locked,
