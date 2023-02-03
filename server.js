@@ -7,6 +7,7 @@ const multer = require("multer");
 // const upload = multer();
 // chat
 const http = require("http");
+const chatService = require("./src/services/ChatService");
 const { Server } = require("socket.io");
 dotenv.config();
 
@@ -43,6 +44,28 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join-room", (data) => { // data -> {roomId:number, token:string}
+    const joinRoom = chatService.joinRoom(data.token)
+    if (joinRoom.code == 200) {
+      socket.join(data.roomId);
+    }
+
+    console.log(`User ${joinRoom.data.first_name} with ID ${joinRoom.data.id} joined room: ${data.roomId}`);
+  });
+
+  socket.on("subcribe-notification", (token) => {
+    const joinRoom = chatService.joinRoom(data.token)
+    if (joinRoom.code == 200) {
+      socket.join(joinRoom.id+joinRoom.role);
+    }
+  });
+
+  // TO-DO : socket send-message, api get room by userId, api get chat by room id
+  socket.on("send-message", (data) => {
+    socket.to(data.room_id).emit("receive_message", data);
+    socket.to("notif123").emit("receive_notification", data);
+  });
 
   socket.on("join_room", (data) => {
     socket.join(data);
