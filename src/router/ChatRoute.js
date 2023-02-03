@@ -30,7 +30,7 @@ router.get(
     loadRoomMessageController
 );
 
-router.get(
+router.post(
     "/api/chat/load-room-header",
     auth.parseToken,
     validation(loadChatValidation),
