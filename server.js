@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const UserRoute = require("./src/router/UserRoute");
+const ChatRoute = require("./src/router/ChatRoute");
 const bodyparser = require("body-parser");
 const multer = require("multer");
 // const upload = multer();
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(UserRoute);
+app.use(ChatRoute);
 
 // chat
 const server = http.createServer(app);

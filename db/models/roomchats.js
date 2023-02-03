@@ -14,12 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   roomChats.init({
-    seekerId: DataTypes.INTEGER,
-    tenantId: DataTypes.INTEGER,
-    kostId: DataTypes.INTEGER
+    seeker_id: DataTypes.INTEGER,
+    tenant_id: DataTypes.INTEGER,
+    kost_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'roomChats',
+    tableName: 'room_chats',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   });
   return roomChats;
 };

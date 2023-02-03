@@ -51,6 +51,6 @@ db.oauth_user_role = require("./oauth_user_role.js")(sequelize, Sequelize);
 db.oauth_role = require("./oauth_role")(sequelize, Sequelize);
 db.chat = require("./chats")(sequelize, Sequelize);
 db.roomChat = require("./roomchats")(sequelize, Sequelize);
-
+db.kost = require("./kost")(sequelize, Sequelize);
 
 module.exports = db;

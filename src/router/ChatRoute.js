@@ -1,19 +1,27 @@
 const {
-    goToRoomChat
+    goToRoomChat, loadMessageController
 } = require("../controllers/chatController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
 const { validation } = require("../middlewares/validations");
 const {
-    goToRoomChat, goToRoomChatValidation
+    goToRoomChatValidation, loadChatValidation
 } = require("../middlewares/validations/chatValidations");
 
+const router = express.Router();
 
-router.get(
-    "/api/chat/",
+router.post(
+    "/api/chat",
     auth.parseToken,
     validation(goToRoomChatValidation),
     goToRoomChat
-  );
+);
 
-const router = express.Router();
+router.post(
+    "/api/load-chat",
+    auth.parseToken,
+    validation(loadChatValidation),
+    loadMessageController
+);
+
+module.exports = router;

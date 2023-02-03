@@ -9,26 +9,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      roomChatId: {
+      room_chat_id: {
         type: Sequelize.INTEGER
       },
-      senderId: {
+      sender_id: {
         type: Sequelize.INTEGER
       },
-      statusSender: {
+      status_sender: {
         type: Sequelize.STRING
       },
       message: {
         type: Sequelize.TEXT
       },
-      statusMessage: {
+      status_message: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
