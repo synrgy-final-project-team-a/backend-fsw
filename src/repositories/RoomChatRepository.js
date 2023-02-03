@@ -35,14 +35,15 @@ const getUserRoomChats = async(userId, userRole) => {
     let rooms = [[],null];
     if (userRole == "ROLE_SK") {
         rooms = await sequelize.query(
-            "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc " +
+            "SELECT rc.*, k.kost_name, k.city, k.address, k.front_building_photo as kost_photo_1, k.front_farbuilding_photo as kost_photo_2, k.front_road_photo as kost_photo_3 FROM room_chats rc " +
             "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
             `WHERE seeker_id = ${userId}`
         );
     } else if (userRole == "ROLE_TN") {
         rooms = await sequelize.query(
-            "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc " +
+            "SELECT rc.*, k.kost_name, k.city, k.address, p.first_name as seeker_name, p.avatar as seeker_avatar FROM room_chats rc " +
             "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
+            "LEFT JOIN profile p ON p.id = rc.seeker_id " +
             `WHERE tenant_id = ${userId}`
         );
     }
