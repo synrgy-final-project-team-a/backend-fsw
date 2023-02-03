@@ -32,4 +32,10 @@ const loadRoomMessageController = async(req, res) => {
     return res.status(loadRoom.status).json(loadRoom);
 }
 
-module.exports = {goToRoomChat, loadMessageController, loadRoomMessageController}
+const getHeaderRoomChat = async(req, res) => {
+    const loadHeader = await RoomChatService.getDetailRoomChat(req.user.user_name, req.user.role[0], req.body.roomId)
+
+    return res.status(loadHeader.status).json(loadHeader);
+}
+
+module.exports = {goToRoomChat, loadMessageController, loadRoomMessageController, getHeaderRoomChat}

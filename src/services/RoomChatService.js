@@ -1,10 +1,10 @@
-const roomChat = require("../repositories/RoomChatRepository")
+const roomChatRepository = require("../repositories/RoomChatRepository")
 const kost = require("../repositories/KostRepository")
 const userService = require("./UserService");
 
 const createRoomChat = async(seekerId, kostId, userRole) => {
     try {
-        const cekRoom = await roomChat.cekRoom(seekerId, kostId, userRole);
+        const cekRoom = await roomChatRepository.cekRoom(seekerId, kostId, userRole);
 
         if (cekRoom !== undefined) {
             return {
@@ -22,7 +22,7 @@ const createRoomChat = async(seekerId, kostId, userRole) => {
             tenant_id: getTenantId.profile_id
         }
 
-        const room = await roomChat.createRoom(payloadCreateRoomChat);
+        const room = await roomChatRepository.createRoom(payloadCreateRoomChat);
 
         if (!room) {
             return {
@@ -76,7 +76,7 @@ const loadRoomChat = async(email, userRole) => {
         if (userDetail.status != 200) {
             return userDetail;
         }
-        const getUserRoomChats = await roomChat.getUserRoomChats(userDetail.data.id, userRole);
+        const getUserRoomChats = await roomChatRepository.getUserRoomChats(userDetail.data.id, userRole);
 
         return {
             status: 200,
@@ -93,7 +93,46 @@ const loadRoomChat = async(email, userRole) => {
     }
 }
 
+const getDetailRoomChat = async(email, userRole, roomId) => {
+    try {
+        const userDetail = await userService.getDetailUser({email: email, role:userRole});
+        if (userDetail.status != 200) {
+            return userDetail;
+        }
+        console.log(userDetail);
+        const roomChat = await roomChatRepository.getDetailRoomChats(roomId);
+        console.log(roomChat);
+    
+        if (userRole == "ROLE_SK" && userDetail.data.id != roomChat[0].seeker_id) {
+            return {
+                status: 401,
+                message: "User Not Authorized",
+                data: null
+            }
+        } else if (userRole == "ROLE_TN" && userDetail.data.id != roomChat[0].tenant_id) {
+            return {
+                status: 401,
+                message: "User Not Authorized",
+                data: null
+            }
+        }
+        
+        return {
+            status: 200,
+            message: "Berhail Get Detail Room",
+            data: roomChat[0]
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            message: "Internal Server Error",
+            data: null
+        }
+    }
+}
+
 
 module.exports = {
-    createRoomChat, joinRoomChat, loadRoomChat
+    createRoomChat, joinRoomChat, loadRoomChat, getDetailRoomChat
 }

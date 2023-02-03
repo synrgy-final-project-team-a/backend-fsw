@@ -50,10 +50,20 @@ const getUserRoomChats = async(userId, userRole) => {
     return rooms[0];
 }
 
+const getDetailRoomChats = async(roomId) => {
+    detailRoom = await sequelize.query(
+        "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc " +
+        "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
+        `WHERE rc.id = ${roomId}`
+    );
+
+    return detailRoom[0];
+}
+
 const findRoomById = async(roomId) => {
     return roomChat.findByPk(roomId);
 }
 
 module.exports = {
-    createRoom, cekRoom, getUserRoomChats, findRoomById
+    createRoom, cekRoom, getUserRoomChats, findRoomById, getDetailRoomChats
 }

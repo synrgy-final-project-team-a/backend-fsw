@@ -1,5 +1,5 @@
 const {
-    goToRoomChat, loadMessageController, loadRoomMessageController
+    goToRoomChat, loadMessageController, loadRoomMessageController, getHeaderRoomChat
 } = require("../controllers/chatController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
@@ -18,16 +18,23 @@ router.post(
 );
 
 router.post(
-    "/api/load-chat",
+    "/api/chat/load-chat",
     auth.parseToken,
     validation(loadChatValidation),
     loadMessageController
 );
 
 router.get(
-    "/api/load-room",
+    "/api/chat/load-room",
     auth.parseToken,
     loadRoomMessageController
+);
+
+router.get(
+    "/api/chat/load-room-header",
+    auth.parseToken,
+    validation(loadChatValidation),
+    getHeaderRoomChat
 );
 
 module.exports = router;
