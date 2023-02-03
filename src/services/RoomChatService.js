@@ -100,9 +100,8 @@ const getDetailRoomChat = async(email, userRole, roomId) => {
         if (userDetail.status != 200) {
             return userDetail;
         }
-        console.log(userDetail);
+
         const roomChat = await roomChatRepository.getDetailRoomChats(roomId);
-        console.log(roomChat);
     
         if (userRole == "ROLE_SK" && userDetail.data.id != roomChat[0].seeker_id) {
             return {
