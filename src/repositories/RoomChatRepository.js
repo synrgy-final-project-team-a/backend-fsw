@@ -92,7 +92,7 @@ const refreshRoomChat = async(userId, userRole, roomId) => {
               "LEFT JOIN ( " +
                   "SELECT * FROM chats ch WHERE (room_chat_id, id) IN (SELECT room_chat_id, MAX(id) FROM chats GROUP BY room_chat_id) ORDER BY created_at DESC " +
               ") ab ON (ab.room_chat_id = rc.id) " +
-              `WHERE seeker_id = ${userId} AND k.id = ${roomId}`
+              `WHERE seeker_id = ${userId} AND rc.id = ${roomId}`
     );
   } else if (userRole == "ROLE_TN") {
     rooms = await sequelize.query(
@@ -102,7 +102,7 @@ const refreshRoomChat = async(userId, userRole, roomId) => {
               "LEFT JOIN ( " +
                   "SELECT * FROM chats ch WHERE (room_chat_id, id) IN (SELECT room_chat_id, MAX(id) FROM chats GROUP BY room_chat_id) ORDER BY created_at DESC " +
               ") ab ON (ab.room_chat_id = rc.id) " +
-              `WHERE tenant_id = ${userId} AND k.id = ${roomId}`
+              `WHERE tenant_id = ${userId} AND rc.id = ${roomId}`
     );
   }
   
