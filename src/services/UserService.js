@@ -40,7 +40,7 @@ const deleteUser = async (id) => {
 const getUsers = async (page) => {
   try {
     let startAt = 0;
-    let endAt = 10
+    let endAt = 10;
     if (page>0) {
       startAt = (10 * page);
       endAt = 10*(page*2);
@@ -54,7 +54,7 @@ const getUsers = async (page) => {
       totalPerPage: 10,
       totalContent: parseInt(users.total),
       content: users.result
-    }
+    };
 
     return {
       status: 200,
@@ -278,19 +278,19 @@ const updateProfile = async ({
 }) => {
   try {
     if(email == "" || address == "" || avatar == "" || city == "" || first_name == "" || gmaps == "" || last_name == "" || phone_number == "" || province == ""){
-       return {
-         status: 400,
-         message: "Data cant be string empty, please fill the field",
-         data: null,
-       };
+      return {
+        status: 400,
+        message: "Data cant be string empty, please fill the field",
+        data: null,
+      };
     }
-      if (gender != null && gender != "FEMALE" && gender != "MALE") {
-        return {
-          status: 400,
-          message: "Gender must be a FEMALE or MALE",
-          data: null,
-        };
-      }
+    if (gender != null && gender != "FEMALE" && gender != "MALE") {
+      return {
+        status: 400,
+        message: "Gender must be a FEMALE or MALE",
+        data: null,
+      };
+    }
     const getUser = await oauthUserRepository.getUserByEmail({ email });
     if (!getUser) {
       return {

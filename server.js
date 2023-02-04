@@ -3,9 +3,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const UserRoute = require("./src/router/UserRoute");
 const ChatRoute = require("./src/router/ChatRoute");
-const bodyparser = require("body-parser");
-const multer = require("multer");
-// const upload = multer();
 // chat
 const http = require("http");
 const chatService = require("./src/services/ChatService");
@@ -49,6 +46,7 @@ io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
   socket.on("join-room", async (data) => {
+    // data -> {roomId:number, token:string}
     const joinRoom = await roomChatService.joinRoomChat(data);
     if (joinRoom.status == 200) {
       console.log(
@@ -65,6 +63,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("subscribe-notification", async (data) => {
+    // data -> {token:string}
     const joinRoom = await roomChatService.joinNotif(data);
     if (joinRoom.status == 200) {
       socket.join(joinRoom.data.id + "-||-" + joinRoom.data.role);
@@ -120,16 +119,6 @@ io.on("connection", (socket) => {
               : "ROLE_SK")
         )
         .emit("subscribe-notification", sendMessage.data.output);
-
-      console.log(
-        (sendMessage.data.output.status_sender == "ROLE_SK"
-          ? sendMessage.data.dataRoom.tenant_id
-          : sendMessage.data.dataRoom.seeker_id) +
-          "-||-" +
-          (sendMessage.data.output.status_sender == "ROLE_SK"
-            ? "ROLE_TN"
-            : "ROLE_SK")
-      );
     }
   });
 

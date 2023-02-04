@@ -112,7 +112,6 @@ const loadRoomChat = async (email, userRole) => {
 };
 
 const getDetailRoomChat = async ({ email, userRole, roomId }) => {
-  // console.log("as");
   try {
     const userDetail = await userService.getDetailUser({
       email: email,
@@ -189,6 +188,7 @@ const joinNotif = async (data) => {
     };
   }
 };
+
 module.exports = {
   createRoomChat,
   joinRoomChat,

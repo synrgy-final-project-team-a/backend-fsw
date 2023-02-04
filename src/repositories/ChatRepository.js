@@ -1,4 +1,3 @@
-const { sequelize, Sequelize } = require("../../db/models/index.js");
 const models = require("../../db/models/index.js");
 const chatModel = models.chat;
 
