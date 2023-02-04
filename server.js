@@ -110,6 +110,7 @@ io.on("connection", (socket) => {
   socket.on("send-message", async (data) => {
     // data -> {roomId:number, message:string, sender:string(token)}
     const sendMessage = await chatService.sendMessage(data);
+    const loadMessage = await roomChatService.loadRoomChatBySocket(data);
 
     if (sendMessage.status == 200) {
       socket
@@ -138,7 +139,7 @@ io.on("connection", (socket) => {
               ? "ROLE_TN"
               : "ROLE_SK")
         )
-        .emit("subscribe-notification", sendMessage.data.output);
+        .emit("load-room-chat", loadMessage);
     }
   });
 
