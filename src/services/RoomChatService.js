@@ -213,11 +213,59 @@ const loadRoomChatBySocket = async(data) => {
   }
 };
 
+const getHeaderRoomChat = async (email, userRole, roomId) => {
+  try {
+    const userDetail = await userService.getDetailUser({
+      email: email,
+      role: userRole,
+    });
+    if (userDetail.status != 200) {
+      return userDetail;
+    }
+
+    const roomChat = await roomChatRepository.getHeaderRoomChat(roomId, userRole);
+
+
+    if (userRole == "ROLE_SK" && userDetail.data.id != roomChat[0].seeker_id) {
+      return {
+        status: 401,
+        message: "User Not Authorized",
+        data: null,
+      };
+    } else if (
+      userRole == "ROLE_TN" &&
+      userDetail.data.id != roomChat[0].tenant_id
+    ) {
+      return {
+        status: 401,
+        message: "User Not Authorized",
+        data: null,
+      };
+    }
+
+    const output = { ...roomChat[0], role_user: userRole };
+    
+    return {
+      status: 200,
+      message: "Berhail Get Detail Room",
+      data: output ,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: "Internal Server Error",
+      data: null,
+    };
+  }
+};
+
 module.exports = {
   createRoomChat,
   joinRoomChat,
   loadRoomChat,
   getDetailRoomChat,
   joinNotif,
-  loadRoomChatBySocket
+  loadRoomChatBySocket,
+  getHeaderRoomChat
 };

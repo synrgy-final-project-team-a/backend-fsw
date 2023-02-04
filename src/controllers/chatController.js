@@ -40,7 +40,7 @@ const loadRoomMessageController = async (req, res) => {
 };
 
 const getHeaderRoomChat = async (req, res) => {
-  const loadHeader = await RoomChatService.getDetailRoomChat(
+  const loadHeader = await RoomChatService.getHeaderRoomChat(
     req.user.user_name,
     req.user.role[0],
     req.body.roomId

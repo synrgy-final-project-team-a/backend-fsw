@@ -54,6 +54,25 @@ const getUserRoomChats = async(userId, userRole) => {
   return rooms[0];
 };
 
+const getHeaderRoomChat = async(roomId, userRole) => {
+  let headerRoom = [[],null];
+  if (userRole == "ROLE_SK") {
+    headerRoom = await sequelize.query(
+      "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc  " +
+            "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
+            `WHERE rc.id = ${roomId}`
+    );
+  } else if (userRole == "ROLE_TN") {
+    headerRoom = await sequelize.query(
+      "SELECT rc.*, p.first_name as seeker_name, p.avatar as seeker_avatar, p.gender as seeker_gender, p.city as seeker_city FROM room_chats rc  " +
+            "LEFT JOIN profile p ON p.id = rc.seeker_id " +
+            `WHERE rc.id = ${roomId}`
+    );
+  }
+  
+  return headerRoom[0];
+};
+
 const getDetailRoomChats = async(roomId) => {
   const detailRoom = await sequelize.query(
     "SELECT rc.*, k.kost_name, k.city, k.address FROM room_chats rc  " +
@@ -69,5 +88,5 @@ const findRoomById = async(roomId) => {
 };
 
 module.exports = {
-  createRoom, cekRoom, getUserRoomChats, findRoomById, getDetailRoomChats
+  createRoom, cekRoom, getUserRoomChats, findRoomById, getDetailRoomChats, getHeaderRoomChat
 };
