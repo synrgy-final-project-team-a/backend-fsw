@@ -2,7 +2,8 @@ const roomChatRepository = require("../repositories/RoomChatRepository");
 const kostRepository = require("../repositories/KostRepository");
 const chatRepository = require("../repositories/ChatRepository");
 const userService = require("./UserService");
-const jwt = require("jsonwebtoken");
+const {jwt, decodeToken} = require("../utils/tools");
+
 const createRoomChat = async (seekerId, kostId, userRole) => {
   try {
     const cekRoom = await roomChatRepository.cekRoom(
@@ -199,10 +200,24 @@ const joinNotif = async (data) => {
   }
 };
 
+const loadRoomChatBySocket = async(data) => {
+  const decodeResult = await decodeToken(data.sender);
+  if (decodeResult == null) {
+    return {
+      code: 401,
+      message: "Unautorized access",
+      data: null,
+    };
+  } else {
+    return await loadRoomChat(decodeResult.user_name, decodeResult.role[0]);
+  }
+};
+
 module.exports = {
   createRoomChat,
   joinRoomChat,
   loadRoomChat,
   getDetailRoomChat,
   joinNotif,
+  loadRoomChatBySocket
 };

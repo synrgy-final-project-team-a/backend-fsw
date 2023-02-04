@@ -71,6 +71,14 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("load-room-chat", async (data) => {
+    // data -> {token:string}
+    const joinRoom = await roomChatService.joinNotif(data);
+    if (joinRoom.status == 200) {
+      socket.join(joinRoom.data.id + "-room-chat-" + joinRoom.data.role);
+    }
+  });
+
   /** TEST CASE SOCKET.IO
    misal room
    {
@@ -114,6 +122,18 @@ io.on("connection", (socket) => {
             ? sendMessage.data.dataRoom.tenant_id
             : sendMessage.data.dataRoom.seeker_id) +
             "-||-" +
+            (sendMessage.data.output.status_sender == "ROLE_SK"
+              ? "ROLE_TN"
+              : "ROLE_SK")
+        )
+        .emit("subscribe-notification", sendMessage.data.output);
+
+      socket
+        .to(
+          (sendMessage.data.output.status_sender == "ROLE_SK"
+            ? sendMessage.data.dataRoom.tenant_id
+            : sendMessage.data.dataRoom.seeker_id) +
+            "-room-chat-" +
             (sendMessage.data.output.status_sender == "ROLE_SK"
               ? "ROLE_TN"
               : "ROLE_SK")
