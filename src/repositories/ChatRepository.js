@@ -6,6 +6,9 @@ const loadMessageByKostId = async (roomId) => {
     where: {
       room_chat_id: roomId,
     },
+    order: [
+      ["created_at", "ASC"]
+    ]
   });
   // console.log(loadMessage);
   return loadMessage;
