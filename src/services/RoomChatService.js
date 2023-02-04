@@ -53,7 +53,7 @@ const createRoomChat = async (seekerId, kostId, userRole) => {
 
 const joinRoomChat = async (data) => {
   try {
-    const decoded = await jwt.verify(data.token, process.env.TOKEN_SECRET);
+    const decoded = await jwt.verify(data.token, "s3cr3t");
 
     if (decoded == null) {
       return {
@@ -123,8 +123,8 @@ const getDetailRoomChat = async ({ email, userRole, roomId }) => {
     }
 
     const roomChat = await roomChatRepository.getDetailRoomChats(roomId);
-    console.log("5");
-    console.log(roomChat);
+
+
     if (userRole == "ROLE_SK" && userDetail.data.id != roomChat[0].seeker_id) {
       return {
         status: 401,
@@ -142,10 +142,12 @@ const getDetailRoomChat = async ({ email, userRole, roomId }) => {
       };
     }
 
+    const output = { ...roomChat[0], role_user: userRole };
+    
     return {
       status: 200,
       message: "Berhail Get Detail Room",
-      data: { ...roomChat[0], role_user: userRole },
+      data: output ,
     };
   } catch (error) {
     console.log(error);
@@ -157,9 +159,40 @@ const getDetailRoomChat = async ({ email, userRole, roomId }) => {
   }
 };
 
+const joinNotif = async (data) => {
+  try {
+    const decoded = await jwt.verify(data.token, "s3cr3t");
+    console.log(decoded);
+    if (decoded == null) {
+      return {
+        code: 401,
+        message: "Unautorized access",
+        data: null,
+      };
+    } else {
+      const detailUser = await userService.getDetailUser({
+        email: decoded.user_name,
+        role: decoded.authorities[0],
+      });
+      return {
+        status: 200,
+        message: "succsess",
+        data: detailUser.data,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      code: 500,
+      message: "Token Invalid",
+      data: null,
+    };
+  }
+};
 module.exports = {
   createRoomChat,
   joinRoomChat,
   loadRoomChat,
   getDetailRoomChat,
+  joinNotif,
 };

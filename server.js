@@ -48,34 +48,27 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on("join-room", (data) => {
-    // data -> {roomId:number, token:string}
-    // const joinRoom = roomChatService.joinRoomChat(data);
-    // console.log(joinRoom);
-    // if (joinRoom.code == 200) {
-    //   console.log(
-    //     `User ${
-    //       joinRoom.data.role_user == "ROLE_SK"
-    //         ? joinRoom.data.seeker_id
-    //         : joinRoom.data.tenant_id
-    //     } with role ${joinRoom.data.role_user} joined room: ${data.roomId}`
-    //   );
-    //   socket.join(data.roomId);
-    // } else {
-    //   console.log(joinRoom);
-    // }
-    socket.join(data.roomId);
-    console.log(`User with ID: ${socket.id} joined room: ${data.roomId}`);
+  socket.on("join-room", async (data) => {
+    const joinRoom = await roomChatService.joinRoomChat(data);
+    if (joinRoom.status == 200) {
+      console.log(
+        `User ${
+          joinRoom.data.role_user == "ROLE_SK"
+            ? joinRoom.data.seeker_id
+            : joinRoom.data.tenant_id
+        } with role ${joinRoom.data.role_user} joined room: ${data.roomId}`
+      );
+      socket.join(data.roomId);
+    } else {
+      console.log(joinRoom);
+    }
   });
 
   socket.on("subscribe-notification", async (data) => {
-    const joinRoom = await roomChatService.joinRoom(data);
-    if (joinRoom.code == 200) {
-      socket.join(
-        joinRoom.data.role_user == "ROLE_SK"
-          ? joinRoom.data.seeker_id
-          : joinRoom.data.tenant_id + "-||-" + joinRoom.data.role_user
-      );
+    const joinRoom = await roomChatService.joinNotif(data);
+    if (joinRoom.status == 200) {
+      socket.join(joinRoom.data.id + "-||-" + joinRoom.data.role);
+      console.log(joinRoom.data.id + "-||-" + joinRoom.data.role);
     }
   });
 
@@ -110,44 +103,35 @@ io.on("connection", (socket) => {
   socket.on("send-message", async (data) => {
     // data -> {roomId:number, message:string, sender:string(token)}
     const sendMessage = await chatService.sendMessage(data);
-    // console.log(sendMessage);
+
     if (sendMessage.status == 200) {
       socket
-        .to(sendMessage.data.room_chat_id)
-        .emit("receive-message", sendMessage.data);
+        .to(sendMessage.data.output.room_chat_id)
+        .emit("receive-message", sendMessage.data.output);
 
-      if ((sendMessage.data.status_sender = "ROLE_SK")) {
-        socket
-          .to(
-            sendMessage.data.role_user == "ROLE_SK"
-              ? sendMessage.data.tenant_id
-              : sendMessage.data.seeker_id +
-                "-||-" +
-                (sendMessage.data.role_user == "ROLE_SK")
+      socket
+        .to(
+          (sendMessage.data.output.status_sender == "ROLE_SK"
+            ? sendMessage.data.dataRoom.tenant_id
+            : sendMessage.data.dataRoom.seeker_id) +
+            "-||-" +
+            (sendMessage.data.output.status_sender == "ROLE_SK"
               ? "ROLE_TN"
-              : "ROLE_SK"
-          )
-          .emit("subscribe-notification", sendMessage.data);
-      }
+              : "ROLE_SK")
+        )
+        .emit("subscribe-notification", sendMessage.data.output);
+
+      console.log(
+        (sendMessage.data.output.status_sender == "ROLE_SK"
+          ? sendMessage.data.dataRoom.tenant_id
+          : sendMessage.data.dataRoom.seeker_id) +
+          "-||-" +
+          (sendMessage.data.output.status_sender == "ROLE_SK"
+            ? "ROLE_TN"
+            : "ROLE_SK")
+      );
     }
   });
-
-  // socket.on("join_room", (data) => {
-  //   socket.join(data);
-  //   console.log(data);
-  //   console.log(`User with ID: ${socket.id} joined room: ${data}`);
-  // });
-  // socket.on("join_notification", (data) => {
-  //   socket.join(data);
-  //   console.log(data);
-  //   console.log(`User with ID: ${socket.id} joined room: ${data}`);
-  // });
-
-  // socket.on("send_message", (data) => {
-  //   console.log(data);
-  //   socket.to(data.room_id).emit("receive_message", data);
-  //   socket.to("notif123").emit("receive_notification", data);
-  // });
 
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);

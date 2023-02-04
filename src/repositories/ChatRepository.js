@@ -13,8 +13,6 @@ const loadMessageByKostId = async (roomId) => {
 };
 
 const saveMessage = async (payload) => {
-  console.log("6");
-  console.log(payload);
   return await chatModel.create(payload);
 };
 
