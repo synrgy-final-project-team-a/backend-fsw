@@ -209,7 +209,7 @@ const loadRoomChatBySocket = async(data) => {
       data: null,
     };
   } else {
-    return await loadRoomChat(decodeResult.user_name, decodeResult.role[0]);
+    return await loadRoomChat(decodeResult.user_name, decodeResult.authorities[0]);
   }
 };
 
