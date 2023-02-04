@@ -213,6 +213,33 @@ const loadRoomChatBySocket = async(data) => {
   }
 };
 
+const refreshRoomChatBySocket = async(userId, userRole, roomId) => {
+  try {
+    const refreshRoomChat = await roomChatRepository.refreshRoomChat(userId, userRole, roomId);
+  
+    if (!refreshRoomChat) {
+      return {
+        status: 101,
+        message: "failed refresh message",
+        data: null,
+      };
+    } else {
+      return {
+        status: 200,
+        message: "success send message",
+        data: {...refreshRoomChat},
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: "Internal Server Error",
+      data: null,
+    };
+  }
+};
+
 const getHeaderRoomChat = async (email, userRole, roomId) => {
   try {
     const userDetail = await userService.getDetailUser({
@@ -267,5 +294,6 @@ module.exports = {
   getDetailRoomChat,
   joinNotif,
   loadRoomChatBySocket,
-  getHeaderRoomChat
+  getHeaderRoomChat,
+  refreshRoomChatBySocket
 };
