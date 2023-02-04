@@ -1,5 +1,6 @@
 const roomChatRepository = require("../repositories/RoomChatRepository");
-const kost = require("../repositories/KostRepository");
+const kostRepository = require("../repositories/KostRepository");
+const chatRepository = require("../repositories/ChatRepository");
 const userService = require("./UserService");
 const jwt = require("jsonwebtoken");
 const createRoomChat = async (seekerId, kostId, userRole) => {
@@ -18,7 +19,7 @@ const createRoomChat = async (seekerId, kostId, userRole) => {
       };
     }
 
-    const getTenantId = await kost.getKostByKostId(kostId);
+    const getTenantId = await kostRepository.getKostByKostId(kostId);
 
     const payloadCreateRoomChat = {
       seeker_id: seekerId,
@@ -63,11 +64,20 @@ const joinRoomChat = async (data) => {
       };
     } else {
       // const detailUser = await userService.getDetailUser({email: decoded.user_name, role:decoded.role[0]});
-      return await getDetailRoomChat({
+      const detailRoomChat = await getDetailRoomChat({
         email: decoded.user_name,
         userRole: decoded.authorities[0],
         roomId: data.roomId,
       });
+
+      console.log(detailRoomChat);
+      if (detailRoomChat.data.role_user == "ROLE_SK") {
+        await chatRepository.updateStatusMessage(data.roomId, detailRoomChat.data.tenant_id);
+      } else if (detailRoomChat.data.role_user == "ROLE_TN") {
+        await chatRepository.updateStatusMessage(data.roomId, detailRoomChat.data.seeker_id);
+      }
+
+      return detailRoomChat;
     }
   } catch (error) {
     console.log(error);

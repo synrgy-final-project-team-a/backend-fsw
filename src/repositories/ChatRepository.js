@@ -15,7 +15,20 @@ const saveMessage = async (payload) => {
   return await chatModel.create(payload);
 };
 
+const updateStatusMessage = async(roomChatId, senderId) => {
+  const updateStatus = await chatModel.update(
+    {status_message: "READED"},
+    {where:{
+      room_chat_id: roomChatId,
+      sender_id: senderId
+    }}
+  );
+
+  return updateStatus;
+};
+
 module.exports = {
   loadMessageByKostId,
   saveMessage,
+  updateStatusMessage
 };

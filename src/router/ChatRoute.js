@@ -4,6 +4,7 @@ const {
   loadRoomMessageController,
   getHeaderRoomChat,
   sendMessage,
+  getRoomChat
 } = require("../controllers/chatController");
 const express = require("express");
 const auth = require("../middlewares/authorization");
