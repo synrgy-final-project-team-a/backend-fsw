@@ -31,6 +31,8 @@ app.get("/", (req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(UserRoute);
 
-app.listen(PORT, () =>
+const server = app.listen(PORT, () =>
   console.log(`Example app listening on port http://localhost:${PORT}`)
 );
+
+module.exports = server
