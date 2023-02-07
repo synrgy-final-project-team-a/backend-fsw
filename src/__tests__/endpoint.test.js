@@ -2,14 +2,14 @@ const auth = require("../middlewares/authorization");
 const axios = require("axios");
 const path = require("path");
 const app = require("../../server");
-const userRepository = require("../repositories/UserRepository")
+const userRepository = require("../repositories/UserRepository");
 const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
+const request = require("supertest");
 
 describe("POST Test endpoint /api/user/create", () => {
-  it("Should be response 201 as status code", async () => {
+  it("Should be response 201 as status code", async() => {
     const fileImage = path.join(__dirname, "../uploads/synrgy_logo.jpg");
-    let Token;
     const payloadLogin = {
       email: "superadmin@mail.com",
       password: "password",
@@ -34,14 +34,18 @@ describe("POST Test endpoint /api/user/create", () => {
       status: "Karyawan",
     };
 
-    await axios
+    const loginAdmin =
+    await  axios
       .post(
         "https://authentication-service-production.up.railway.app/api/login-superadmin",
         payloadLogin
       )
       .then((res) => {
-        Token = res.data.access_token;
+        return res.data.access_token;
       });
+
+    const Token = loginAdmin
+    console.log(Token, "kkll")
 
     return request(app)
       .post("/api/user/create")
@@ -62,13 +66,12 @@ describe("POST Test endpoint /api/user/create", () => {
       .field("bank_username", payloadUser.bank_username)
       .field("status", payloadUser.status)
       .then((res) => {
-        console.log(res);
         expect(res.status).toBe(201);
         expect(res.body.data).not.toEqual(null);
 
-        userRepository.deleteUser(res.body.data.id)
-        oauthUserRepository.deletedUser(res.body.data.id)
-        oauthUserRoleRepository.deletedUserRole(res.body.data.id)
+        userRepository.deleteUser(res.body.data.id);
+        oauthUserRepository.deletedUser(res.body.data.id);
+        oauthUserRoleRepository.deletedUserRole(res.body.data.id);
       });
   });
 });
