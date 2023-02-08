@@ -42,15 +42,15 @@ const deleteUser = async (id) => {
 
 const getUsers = async (page) => {
   try {
+    console.log(page, "page")
     let startAt = 0;
     let endAt = 10;
     if (page > 0) {
       startAt = 10 * page;
-      endAt = 10 * (page * 2);
+      endAt = (10 * page) + 10;
     }
 
     const users = await userRepository.findAllUser(startAt, endAt);
-
     const resultArr = {
       currentPage: parseInt(page + 1),
       totalPages: Math.ceil(users.total / 10),
