@@ -83,7 +83,9 @@ io.on("connection", (socket) => {
     // data -> {token:string}
     const joinRoom = await roomChatService.joinNotif(data);
     if (joinRoom.status == 200) {
-      socket.join(joinRoom.data.id + "-refresh-room-chat-" + joinRoom.data.role);
+      socket.join(
+        joinRoom.data.id + "-refresh-room-chat-" + joinRoom.data.role
+      );
     }
   });
 
@@ -118,12 +120,13 @@ io.on("connection", (socket) => {
   socket.on("send-message", async (data) => {
     // data -> {roomId:number, message:string, sender:string(token)}
     const sendMessage = await chatService.sendMessage(data);
-    // const loadMessage = await roomChatService.loadRoomChatBySocket(data);
+    const loadMessage = await roomChatService.loadRoomChatBySocket(data);
     const refreshRoomChat = await roomChatService.refreshRoomChatBySocket(
       sendMessage.data.output.sender_id,
       sendMessage.data.output.status_sender,
       sendMessage.data.output.room_chat_id
     );
+    console.log(refreshRoomChat);
 
     if (sendMessage.status == 200) {
       socket
@@ -142,29 +145,29 @@ io.on("connection", (socket) => {
         )
         .emit("subscribe-notification", sendMessage.data.output);
 
-      // socket
-      //   .to(
-      //     (sendMessage.data.output.status_sender == "ROLE_SK"
-      //       ? sendMessage.data.dataRoom.tenant_id
-      //       : sendMessage.data.dataRoom.seeker_id) +
-      //       "-room-chat-" +
-      //       (sendMessage.data.output.status_sender == "ROLE_SK"
-      //         ? "ROLE_TN"
-      //         : "ROLE_SK")
-      //   )
-      //   .emit("load-room-chat", loadMessage);
-
       socket
         .to(
           (sendMessage.data.output.status_sender == "ROLE_SK"
             ? sendMessage.data.dataRoom.tenant_id
             : sendMessage.data.dataRoom.seeker_id) +
-            "-refresh-room-chat-" +
+            "-room-chat-" +
             (sendMessage.data.output.status_sender == "ROLE_SK"
               ? "ROLE_TN"
               : "ROLE_SK")
         )
-        .emit("refresh-room-chat", refreshRoomChat);
+        .emit("load-room-chat", loadMessage);
+
+      // socket
+      //   .to(
+      //     (sendMessage.data.output.status_sender == "ROLE_SK"
+      //       ? sendMessage.data.dataRoom.tenant_id
+      //       : sendMessage.data.dataRoom.seeker_id) +
+      //       "-refresh-room-chat-" +
+      //       (sendMessage.data.output.status_sender == "ROLE_SK"
+      //         ? "ROLE_TN"
+      //         : "ROLE_SK")
+      //   )
+      //   .emit("refresh-room-chat", refreshRoomChat);
     }
   });
 
