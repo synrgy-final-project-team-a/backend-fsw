@@ -8,7 +8,7 @@ const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository
 const request = require("supertest");
 
 describe("POST Test endpoint /api/user/create", () => {
-  it("Should be response 201 as status code", async() => {
+  it("Should be response 201 as status code", async () => {
     const fileImage = path.join(__dirname, "../uploads/synrgy_logo.jpg");
     const payloadLogin = {
       email: "superadmin@mail.com",
@@ -34,8 +34,7 @@ describe("POST Test endpoint /api/user/create", () => {
       status: "Karyawan",
     };
 
-    const loginAdmin =
-    await  axios
+    const loginAdmin = await axios
       .post(
         "https://authentication-service-production.up.railway.app/api/login-superadmin",
         payloadLogin
@@ -44,8 +43,8 @@ describe("POST Test endpoint /api/user/create", () => {
         return res.data.access_token;
       });
 
-    const Token = loginAdmin
-    console.log(Token, "kkll")
+    const Token = loginAdmin;
+    console.log(Token, "kkll");
 
     return request(app)
       .post("/api/user/create")
@@ -74,4 +73,62 @@ describe("POST Test endpoint /api/user/create", () => {
         oauthUserRoleRepository.deletedUserRole(res.body.data.id);
       });
   });
+});
+
+describe("Test get by id superadmmin endpoint /api/user/detail/:id", () => {
+  it("Should be response 200 as status code", async () => {
+    const payloadLogin = {
+      email: "superadmin@mail.com",
+      password: "password",
+    };
+
+    const loginAdmin = await axios
+      .post(
+        "https://authentication-service-production.up.railway.app/api/login-superadmin",
+        payloadLogin
+      )
+      .then((res) => {
+        return res.data.access_token;
+      });
+
+    const Token = loginAdmin;
+    // console.log(Token, "kkll");
+
+    return request(app)
+      .get(`/api/user/detail/${4}`)
+      .set("Authorization", `Bearer ${Token}`)
+      .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.data).not.toEqual(null);
+      });
+  }, 30000);
+});
+
+describe("Test get profile endpoint /api/user/detail", () => {
+  it("Should be response 200 as status code", async () => {
+    const payloadLogin = {
+      email: "tennant@mail.com",
+      password: "password",
+    };
+
+    const loginAdmin = await axios
+      .post(
+        "https://authentication-service-production.up.railway.app/api/login-tennant",
+        payloadLogin
+      )
+      .then((res) => {
+        return res.data.access_token;
+      });
+
+    const Token = loginAdmin;
+    // console.log(Token, "kkll");
+
+    return request(app)
+      .get(`/api/user/detail`)
+      .set("Authorization", `Bearer ${Token}`)
+      .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.data).not.toEqual(null);
+      });
+  }, 30000);
 });
