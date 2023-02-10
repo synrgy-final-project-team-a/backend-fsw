@@ -10,7 +10,8 @@ const deleteUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const users = await UserService.getUsers();
+  const page = req.query.page - 1;
+  const users = await UserService.getUsers(page);
 
   res.status(users.status).json(users);
 };
@@ -36,7 +37,12 @@ const createUser = async (req, res) => {
     phone_number,
     province,
     gender,
+    bank_account,
+    bank_name,
+    bank_username,
+    status,
   } = req.body;
+  const status2 = status;
 
   const role_id_arr = role_id.split(",");
   if (req.files[0] == undefined) {
@@ -77,6 +83,10 @@ const createUser = async (req, res) => {
       province: province,
       gender: gender,
       avatar: avatar,
+      bank_account: bank_account,
+      bank_name: bank_name,
+      bank_username: bank_username,
+      status: status2,
       enabled: true,
       not_expired: true,
       not_locked: true,
@@ -108,7 +118,14 @@ const editProfile = async (req, res) => {
     phone_number,
     province,
     gender,
+    bank_account,
+    bank_name,
+    bank_username,
+    status,
   } = req.body;
+
+  const status2 = status;
+
   if (req.files[0] == undefined) {
     const { status, message, data } = await UserService.updateProfile({
       email: req.user.user_name,
@@ -120,6 +137,10 @@ const editProfile = async (req, res) => {
       phone_number: phone_number,
       province: province,
       gender: gender,
+      bank_account: bank_account,
+      bank_name: bank_name,
+      bank_username: bank_username,
+      status: status2,
     });
 
     res.status(status).send({

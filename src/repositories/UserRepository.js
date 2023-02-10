@@ -131,6 +131,10 @@ const updateProfile = async ({
   province,
   gender,
   updated_at,
+  bank_account,
+  bank_name,
+  bank_username,
+  status
 }) => {
   const updateProfile = await UserDetails.update(
     {
@@ -145,6 +149,10 @@ const updateProfile = async ({
       province,
       gender,
       updated_at,
+      bank_account,
+      bank_name,
+      bank_username,
+      status
     },
     { where: { id } }
   );

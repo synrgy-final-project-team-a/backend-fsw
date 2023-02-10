@@ -85,6 +85,14 @@ components:
           type: string
         gender:
           type: string
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
+          type: string
         created_at:
           type: string
         updated_at:
@@ -120,6 +128,14 @@ components:
         province:
           type: string
         gender:
+          type: string
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
           type: string
         created_at:
           type: string
@@ -173,6 +189,14 @@ components:
         avatar:
           type: string
           format: binary
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
+          type: string
        
     SuccessCreateUser:
       type: object
@@ -201,6 +225,14 @@ components:
         province:
           type: string
         gender:
+          type: string
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
           type: string
         created_at:
           type: string
@@ -239,6 +271,14 @@ components:
         avatar:
           type: string
           format: binary
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
+          type: string
     EditUser2:
       type: object
       properties:
@@ -257,6 +297,14 @@ components:
         province:
           type: string
         gender:
+          type: string
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
           type: string
 
     SuccessEditUser:
@@ -280,6 +328,14 @@ components:
         province:
           type: string
         gender:
+          type: string
+        bank_account:
+          type: string
+        bank_name:
+          type: string
+        bank_username:
+          type: string
+        status: 
           type: string
         deleted_at:
           type: string

@@ -1,6 +1,7 @@
 const userRepository = require("../repositories/UserRepository");
 const oauthUserRepository = require("../repositories/OauthUserRepository");
 const oauthUserRoleRepository = require("../repositories/OauthUserRoleRepository");
+const oauthRoleRepository = require("../repositories/OauthRoleRepository");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
 
@@ -20,7 +21,9 @@ const deleteUser = async (id) => {
 
     let dataDeleted = {};
     dataDeleted = getUserById;
-    dataDeleted.dataValues.deleted_at = moment(Date.now()).format("YYYY-MM-DDTHH:mm:ss.sss[Z]").toString();
+    dataDeleted.dataValues.deleted_at = moment(Date.now())
+      .format("YYYY-MM-DDTHH:mm:ss.sss[Z]")
+      .toString();
 
     return {
       status: 200,
@@ -39,21 +42,21 @@ const deleteUser = async (id) => {
 
 const getUsers = async (page) => {
   try {
+    console.log(page, "page")
     let startAt = 0;
     let endAt = 10;
-    if (page>0) {
-      startAt = (10 * page);
-      endAt = 10*(page*2);
+    if (page > 0) {
+      startAt = 10 * page;
+      endAt = (10 * page) + 10;
     }
 
     const users = await userRepository.findAllUser(startAt, endAt);
-
     const resultArr = {
-      currentPage: parseInt(page+1),
-      totalPages: Math.ceil(users.total/10),
+      currentPage: parseInt(page + 1),
+      totalPages: Math.ceil(users.total / 10),
       totalPerPage: 10,
       totalContent: parseInt(users.total),
-      content: users.result
+      content: users.result,
     };
 
     return {
@@ -100,6 +103,10 @@ const getDetailUser = async ({ email, role }) => {
         deleted_at: getUser.deleted_at,
         created_at: getUser.created_at,
         updated_at: getUser.updated_at,
+        bank_account: getUser.bank_account,
+        bank_name: getUser.bank_name,
+        bank_username: getUser.bank_username,
+        status: getUser.status,
         email: getUserId.email,
         role: role,
       },
@@ -127,19 +134,16 @@ const createUser = async ({
   province,
   gender,
   avatar,
+  bank_account,
+  bank_name,
+  bank_username,
+  status,
   enabled,
   not_expired,
   not_locked,
   credential_not_expired,
 }) => {
   try {
-    if(gender != "FEMALE" && gender != "MALE"){
-      return {
-        status: 400,
-        message: "Gender must be a FEMALE or MALE",
-        data: null,
-      };
-    }
     const payloadCreateProfile = {
       address: address,
       city: city,
@@ -150,6 +154,11 @@ const createUser = async ({
       province: province,
       gender: gender,
       avatar: avatar,
+      status: status,
+      bank_account: bank_account,
+      bank_name: bank_name,
+      bank_username: bank_username,
+      updated_at: new Date(),
     };
     const createProfile = await userRepository.createProfile(
       payloadCreateProfile
@@ -204,6 +213,12 @@ const createUser = async ({
           };
         }
 
+        const roleName = [];
+        for (const iterator of role_id) {
+          const getRole = await oauthRoleRepository.getById(iterator);
+          roleName.push(getRole.dataValues.name);
+        }
+
         return {
           status: 200,
           message: "Post User data success",
@@ -220,8 +235,12 @@ const createUser = async ({
             phone_number: createProfile.phone_number,
             province: createProfile.province,
             gender: createProfile.gender,
-            created_at: createProfile.created_at,
-            role_id: role_id,
+            updated_at: createProfile.updated_at,
+            bank_account: createProfile.bank_account,
+            bank_name: createProfile.bank_name,
+            bank_username: createProfile.bank_username,
+            status: createProfile.status,
+            role_id: roleName,
             enabled: payloadCreateUser.enabled,
             not_expired: payloadCreateUser.not_expired,
             not_locked: payloadCreateUser.not_locked,
@@ -275,9 +294,28 @@ const updateProfile = async ({
   phone_number,
   province,
   gender,
+  bank_account,
+  bank_name,
+  bank_username,
+  status,
 }) => {
   try {
-    if(email == "" || address == "" || avatar == "" || city == "" || first_name == "" || gmaps == "" || last_name == "" || phone_number == "" || province == ""){
+    if (
+      email == "" ||
+      address == "" ||
+      avatar == "" ||
+      city == "" ||
+      first_name == "" ||
+      gmaps == "" ||
+      last_name == "" ||
+      phone_number == "" ||
+      province == "" ||
+      gender == "" ||
+      bank_account == "" ||
+      bank_name == "" ||
+      bank_username == "" ||
+      status == ""
+    ) {
       return {
         status: 400,
         message: "Data cant be string empty, please fill the field",
@@ -312,6 +350,10 @@ const updateProfile = async ({
         phone_number: phone_number,
         province: province,
         gender: gender,
+        bank_account: bank_account,
+        bank_name: bank_name,
+        bank_username: bank_username,
+        status: status,
         updated_at: new Date(),
       });
       if (!updatedProfile) {

@@ -154,3 +154,5 @@ io.on("connection", (socket) => {
 server.listen(PORT, () =>
   console.log(`Example app listening on port http://localhost:${PORT}`)
 );
+
+module.exports = server
