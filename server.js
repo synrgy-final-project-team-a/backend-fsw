@@ -79,16 +79,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("refresh-room-chat", async (data) => {
-    // data -> {token:string}
-    const joinRoom = await roomChatService.joinNotif(data);
-    if (joinRoom.status == 200) {
-      socket.join(
-        joinRoom.data.id + "-refresh-room-chat-" + joinRoom.data.role
-      );
-    }
-  });
-
   /** TEST CASE SOCKET.IO
    misal room
    {
@@ -121,12 +111,6 @@ io.on("connection", (socket) => {
     // data -> {roomId:number, message:string, sender:string(token)}
     const sendMessage = await chatService.sendMessage(data);
     const loadMessage = await roomChatService.loadRoomChatBySocket(data);
-    const refreshRoomChat = await roomChatService.refreshRoomChatBySocket(
-      sendMessage.data.output.sender_id,
-      sendMessage.data.output.status_sender,
-      sendMessage.data.output.room_chat_id
-    );
-    console.log(refreshRoomChat);
 
     if (sendMessage.status == 200) {
       socket
@@ -156,19 +140,11 @@ io.on("connection", (socket) => {
               : "ROLE_SK")
         )
         .emit("load-room-chat", loadMessage);
-
-      // socket
-      //   .to(
-      //     (sendMessage.data.output.status_sender == "ROLE_SK"
-      //       ? sendMessage.data.dataRoom.tenant_id
-      //       : sendMessage.data.dataRoom.seeker_id) +
-      //       "-refresh-room-chat-" +
-      //       (sendMessage.data.output.status_sender == "ROLE_SK"
-      //         ? "ROLE_TN"
-      //         : "ROLE_SK")
-      //   )
-      //   .emit("refresh-room-chat", refreshRoomChat);
     }
+  });
+  socket.on("leave-room", async (data) => {
+    socket.leave(data);
+    console.log("leaveRoom" + data);
   });
 
   socket.on("disconnect", () => {
