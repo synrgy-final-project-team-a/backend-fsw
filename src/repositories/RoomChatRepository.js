@@ -32,7 +32,7 @@ const getUserRoomChats = async (userId, userRole) => {
   let rooms = [[], null];
   if (userRole == "ROLE_SK") {
     rooms = await sequelize.query(
-      "SELECT rc.id as room_id, rc.seeker_id, rc.tenant_id, rc.kost_id, k.kost_name, k.city, k.address, k.front_building_photo as kost_photo_1, k.front_farbuilding_photo as kost_photo_2, k.front_road_photo as kost_photo_3, ab.message, ab.status_message, ab.created_at FROM room_chats rc " +
+      "SELECT rc.id as room_id, rc.seeker_id, rc.tenant_id, rc.kost_id, k.kost_name, k.city, k.address, k.front_building_photo as kost_photo_1, k.front_farbuilding_photo as kost_photo_2, k.front_road_photo as kost_photo_3, ab.message, ab.status_message, ab.created_at, ab.sender_id FROM room_chats rc " +
         "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
         "LEFT JOIN ( " +
         "SELECT * FROM chats ch WHERE (room_chat_id, id) IN (SELECT room_chat_id, MAX(id) FROM chats GROUP BY room_chat_id) ORDER BY created_at DESC " +
@@ -41,7 +41,7 @@ const getUserRoomChats = async (userId, userRole) => {
     );
   } else if (userRole == "ROLE_TN") {
     rooms = await sequelize.query(
-      "SELECT rc.id as room_id, rc.seeker_id, rc.tenant_id, rc.kost_id, k.kost_name, k.city, k.address, p.first_name as seeker_name, p.avatar as seeker_avatar, ab.message, ab.status_message, ab.created_at FROM room_chats rc " +
+      "SELECT rc.id as room_id, rc.seeker_id, rc.tenant_id, rc.kost_id, k.kost_name, k.city, k.address, p.first_name as seeker_name, p.avatar as seeker_avatar, ab.message, ab.status_message, ab.created_at, ab.sender_id FROM room_chats rc " +
         "LEFT JOIN kost k ON k.kost_id = rc.kost_id " +
         "LEFT JOIN profile p ON p.id = rc.seeker_id " +
         "LEFT JOIN ( " +
@@ -50,7 +50,7 @@ const getUserRoomChats = async (userId, userRole) => {
         `WHERE tenant_id = ${userId} AND ab.message IS NOT NULL`
     );
   }
-
+  console.log(rooms);
   return rooms[0];
 };
 
