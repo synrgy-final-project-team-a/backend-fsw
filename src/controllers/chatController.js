@@ -26,7 +26,7 @@ const goToRoomChat = async (req, res) => {
 
 const loadMessageController = async (req, res) => {
   const loadMessage = await ChatService.loadMessageService(req.body.roomId);
-  // console.log(loadMessage);
+
   return res.status(loadMessage.status).json(loadMessage);
 };
 
@@ -57,7 +57,6 @@ const getRoomChat = async (req, res) => {
   return res.status(getRoomChat.status).json(getRoomChat);
 };
 const sendMessage = async (req, res) => {
-  console.log(req.body.sender);
   const data = await ChatService.sendMessage({
     roomId: req.body.roomId,
     sender: req.body.sender,

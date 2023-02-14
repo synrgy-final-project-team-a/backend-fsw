@@ -6,11 +6,9 @@ const loadMessageByKostId = async (roomId) => {
     where: {
       room_chat_id: roomId,
     },
-    order: [
-      ["created_at", "ASC"]
-    ]
+    order: [["created_at", "ASC"]],
   });
-  // console.log(loadMessage);
+
   return loadMessage;
 };
 
@@ -18,13 +16,15 @@ const saveMessage = async (payload) => {
   return await chatModel.create(payload);
 };
 
-const updateStatusMessage = async(roomChatId, senderId) => {
+const updateStatusMessage = async (roomChatId, senderId) => {
   const updateStatus = await chatModel.update(
-    {status_message: "READED"},
-    {where:{
-      room_chat_id: roomChatId,
-      sender_id: senderId
-    }}
+    { status_message: "READED" },
+    {
+      where: {
+        room_chat_id: roomChatId,
+        sender_id: senderId,
+      },
+    }
   );
 
   return updateStatus;
@@ -33,5 +33,5 @@ const updateStatusMessage = async(roomChatId, senderId) => {
 module.exports = {
   loadMessageByKostId,
   saveMessage,
-  updateStatusMessage
+  updateStatusMessage,
 };

@@ -2,7 +2,7 @@ const roomChatRepository = require("../repositories/RoomChatRepository");
 const kostRepository = require("../repositories/KostRepository");
 const chatRepository = require("../repositories/ChatRepository");
 const userService = require("./UserService");
-const {jwt, decodeToken} = require("../utils/tools");
+const { jwt, decodeToken } = require("../utils/tools");
 
 const createRoomChat = async (seekerId, kostId, userRole) => {
   try {
@@ -71,11 +71,16 @@ const joinRoomChat = async (data) => {
         roomId: data.roomId,
       });
 
-      console.log(detailRoomChat);
       if (detailRoomChat.data.role_user == "ROLE_SK") {
-        await chatRepository.updateStatusMessage(data.roomId, detailRoomChat.data.tenant_id);
+        await chatRepository.updateStatusMessage(
+          data.roomId,
+          detailRoomChat.data.tenant_id
+        );
       } else if (detailRoomChat.data.role_user == "ROLE_TN") {
-        await chatRepository.updateStatusMessage(data.roomId, detailRoomChat.data.seeker_id);
+        await chatRepository.updateStatusMessage(
+          data.roomId,
+          detailRoomChat.data.seeker_id
+        );
       }
 
       return detailRoomChat;
@@ -134,7 +139,6 @@ const getDetailRoomChat = async ({ email, userRole, roomId }) => {
 
     const roomChat = await roomChatRepository.getDetailRoomChats(roomId);
 
-
     if (userRole == "ROLE_SK" && userDetail.data.id != roomChat[0].seeker_id) {
       return {
         status: 401,
@@ -153,11 +157,11 @@ const getDetailRoomChat = async ({ email, userRole, roomId }) => {
     }
 
     const output = { ...roomChat[0], role_user: userRole };
-    
+
     return {
       status: 200,
       message: "Berhail Get Detail Room",
-      data: output ,
+      data: output,
     };
   } catch (error) {
     console.log(error);
@@ -172,7 +176,7 @@ const getDetailRoomChat = async ({ email, userRole, roomId }) => {
 const joinNotif = async (data) => {
   try {
     const decoded = await jwt.verify(data.token, "s3cr3t");
-    console.log(decoded);
+
     if (decoded == null) {
       return {
         code: 401,
@@ -200,7 +204,7 @@ const joinNotif = async (data) => {
   }
 };
 
-const loadRoomChatBySocket = async(data) => {
+const loadRoomChatBySocket = async (data) => {
   const decodeResult = await decodeToken(data.sender);
   if (decodeResult == null) {
     return {
@@ -209,14 +213,21 @@ const loadRoomChatBySocket = async(data) => {
       data: null,
     };
   } else {
-    return await loadRoomChat(decodeResult.user_name, decodeResult.authorities[0]);
+    return await loadRoomChat(
+      decodeResult.user_name,
+      decodeResult.authorities[0]
+    );
   }
 };
 
-const refreshRoomChatBySocket = async(userId, userRole, roomId) => {
+const refreshRoomChatBySocket = async (userId, userRole, roomId) => {
   try {
-    const refreshRoomChat = await roomChatRepository.refreshRoomChat(userId, userRole, roomId);
-  
+    const refreshRoomChat = await roomChatRepository.refreshRoomChat(
+      userId,
+      userRole,
+      roomId
+    );
+
     if (!refreshRoomChat) {
       return {
         status: 101,
@@ -227,7 +238,7 @@ const refreshRoomChatBySocket = async(userId, userRole, roomId) => {
       return {
         status: 200,
         message: "success send message",
-        data: {...refreshRoomChat},
+        data: { ...refreshRoomChat },
       };
     }
   } catch (error) {
@@ -250,8 +261,10 @@ const getHeaderRoomChat = async (email, userRole, roomId) => {
       return userDetail;
     }
 
-    const roomChat = await roomChatRepository.getHeaderRoomChat(roomId, userRole);
-
+    const roomChat = await roomChatRepository.getHeaderRoomChat(
+      roomId,
+      userRole
+    );
 
     if (userRole == "ROLE_SK" && userDetail.data.id != roomChat[0].seeker_id) {
       return {
@@ -271,11 +284,11 @@ const getHeaderRoomChat = async (email, userRole, roomId) => {
     }
 
     const output = { ...roomChat[0], role_user: userRole };
-    
+
     return {
       status: 200,
       message: "Berhail Get Detail Room",
-      data: output ,
+      data: output,
     };
   } catch (error) {
     console.log(error);
@@ -295,5 +308,5 @@ module.exports = {
   joinNotif,
   loadRoomChatBySocket,
   getHeaderRoomChat,
-  refreshRoomChatBySocket
+  refreshRoomChatBySocket,
 };

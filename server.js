@@ -79,34 +79,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  /** TEST CASE SOCKET.IO
-   misal room
-   {
-      id: 1
-      seeker_id:2
-      tenant_id:1
-      kost_id:9
-   }
-   
-   misal seeker:
-    {
-      id: 2
-      role: ROLE_SK
-    }
-    maka dia join notif dengan unique 2-||-ROLE_SK
-
-    misal tenant
-    {
-      id: 1
-      role: ROLE_TN
-    }
-    maka dia join notif dengan unique 1-||-ROLE_TN
-
-    kemudian
-    tenant mengirim pesan maka notif akan terkirim ke user dengan unique socket notif => 2-||-ROLE_SK (diterima si seeker) ------ test passed
-    jika seeker mengirim pesan maka notif akan terkirim ke user dengan unique socket notif => 1-||-ROLE_TN (diterima si tenant) ------ test passed
-   * **/
-
   socket.on("send-message", async (data) => {
     // data -> {roomId:number, message:string, sender:string(token)}
     const sendMessage = await chatService.sendMessage(data);
@@ -155,4 +127,4 @@ server.listen(PORT, () =>
   console.log(`Example app listening on port http://localhost:${PORT}`)
 );
 
-module.exports = server
+module.exports = server;

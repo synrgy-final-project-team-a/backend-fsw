@@ -50,7 +50,7 @@ const getUserRoomChats = async (userId, userRole) => {
         `WHERE tenant_id = ${userId} AND ab.message IS NOT NULL`
     );
   }
-  console.log(rooms);
+  
   return rooms[0];
 };
 
