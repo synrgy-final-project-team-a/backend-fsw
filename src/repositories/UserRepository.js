@@ -48,7 +48,7 @@ const findAllUser = async (startAt, endAt) => {
   });
 
   const finalResult = resultArr.slice(startAt, endAt);
-  return {result: finalResult, total: resultArr.length};
+  return { result: finalResult, total: resultArr.length };
 };
 
 const getUserById = async (profile_id) => {
@@ -136,7 +136,6 @@ const updateProfile = async ({
   bank_username,
   status
 }) => {
-  
   const updateProfile = await UserDetails.update(
     {
       id,
